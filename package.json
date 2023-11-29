@@ -1,0 +1,38 @@
+{
+  "name": "rs-reverse",
+  "version": "1.0.0",
+  "description": "瑞数算法逆向,website reverse engineering",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand"
+  },
+  "logLevel": "warn",
+  "author": "rnet",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "jest": "^29.7.0",
+    "lodash": "^4.17.21",
+    "log4js": "^6.9.1",
+    "module-alias": "^2.2.3",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "yargs": "^17.7.2"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "@/(.*)": "<rootDir>/$1",
+      "@utils/(.*)": "<rootDir>/utils/$1",
+      "@src/(.*)": "<rootDir>/src/$1"
+    }
+  },
+  "_moduleAliases": {
+    "@": ".",
+    "@src": "./src",
+    "@utils": "./utils"
+  }
+}
