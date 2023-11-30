@@ -8,7 +8,7 @@
 
 1. [瑞数vmp-动态代码生成原理](https://howduudu.tech/#/blog/article/1701276778000)
 
-## 2. 动态代码生成
+## 2. 瑞数算法还原
 
 ### 2.1. makecode子命令
 
@@ -36,7 +36,18 @@ Examples:
   main.js makecode -u http://url/path
 ```
 
+调用示例：
+
+```bash
+ $ node main.js makecode -u http://wcjs.sbj.cnipa.gov.cn/sgtmi
+文件写入成功：./rsvmp/output/dynamic-code.js
+文件写入成功：./rsvmp/output/output_ts.json
+文件写入成功：./rsvmp/output/input_ts.json
+```
+
 ### 2.2. makecookie子命令
+
+执行子命令`makecookie`生成cookie。
 
 进行中...
 

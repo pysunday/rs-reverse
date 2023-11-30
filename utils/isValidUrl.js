@@ -1,4 +1,4 @@
-const url = require('url').URL;
+const URL = require('url').URL;
 
 module.exports = function isValidUrl(url) {
   try {

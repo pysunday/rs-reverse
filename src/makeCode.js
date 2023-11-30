@@ -9,6 +9,8 @@ function writeFile(filepath, text) {
 }
 
 module.exports = function (ts) {
+  logger.info(`传入的$_ts.nsd: ${ts.nsd}`);
+  logger.info(`传入的$_ts.cd: ${ts.cd}`);
   const coder = new Coder(ts);
   const { code, $_ts } = coder.run();
   writeFile(paths.outputResolve('dynamic-code.js'), code);
