@@ -21,7 +21,9 @@
     "module-alias": "^2.2.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "canvas": "^2.11.2",
+    "jsdom": "^22.1.0",
   },
   "jest": {
     "moduleNameMapper": {

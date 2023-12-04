@@ -1,5 +1,6 @@
 const getScd = require('./getScd');
 const globaltext = require('./globaltext');
+const dataOper = require('./dataOper');
 const arraySwap = require('./arraySwap');
 const immutext = require('@src/immutext/');
 const initTs = require('./initTs');
@@ -13,7 +14,7 @@ module.exports = class {
     this.keycodes = []
     this.optext = globaltext();
     this.opmate = this.mateOper();
-    this.opdata = this.dataOper();
+    this.opdata = dataOper();
   }
 
   run() {
@@ -62,7 +63,7 @@ module.exports = class {
   parseGlobalText1(codeArr = []) {
     const { opmate, opdata, optext, keynames, getCurr } = this;
     optext.init(0, immutext.globalText1);
-    opdata.init();
+    opdata.init({ arr8: [4, 16, 64, 256, 1024, 4096, 16384, 65536] });
     opmate.init();
     opmate.setMate('G_$e4', true);
     opmate.setMate('G_$$c', true);
@@ -221,31 +222,6 @@ module.exports = class {
       },
       getAllMate() {
         return Object.keys(mateOri).map(key => [key, mateOri[key], mate[key]])
-      },
-      init,
-    }
-  }
-
-  dataOper(defData = {}) {
-    let data;
-    function init() {
-      data = {
-        ...defData,
-        arr8: [4, 16, 64, 256, 1024, 4096, 16384, 65536],
-      };
-    }
-    init();
-    return {
-      setData(key, val, isNotCover = false) {
-        if (isNotCover && key in data) throw Error(`数据键${key}重复定义`);
-        data[key] = val
-      },
-      getData(key) {
-        if (!(key in data)) throw Error(`数据键${key}未定义`);
-        return data[key]
-      },
-      getAllData() {
-        return data;
       },
       init,
     }
