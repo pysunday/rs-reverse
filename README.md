@@ -7,6 +7,7 @@
 ## 1. 博客文章
 
 1. [瑞数vmp-动态代码生成原理](https://howduudu.tech/#/blog/article/1701276778000)
+2. [补环境-document.all的c++方案](https://howduudu.tech/#/blog/article/1702313578000)
 
 ## 2. 瑞数算法还原
 
