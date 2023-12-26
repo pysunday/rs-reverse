@@ -26,6 +26,7 @@ const valueMap = {
   'parseFloat': swap(gv.cp0_96(5, 18)) + hexnum(gv.cp0_96(8, 30)),
   '11.678': hexnum(gv.cp0_96(7, 17)),
   '1.234': swap(gv.cp0_96(8, 36)),
+  'captureStackTrace': main(gv.cp0_96(7, 63))[0],
 }
 
 test('test cp0_96', () => {

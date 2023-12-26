@@ -5,6 +5,12 @@ const _get = require('lodash/get');
 const cache = {};
 
 class GlobalVarible {
+  get bignum() {
+    return cache.bignum;
+  }
+  get utils() {
+    return cache.utils;
+  }
   get cp0() {
     return cache.cp0;
   }

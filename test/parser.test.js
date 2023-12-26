@@ -1,6 +1,18 @@
 const paths = require('@utils/paths');
 const fs = require('fs');
-const { main, swap, hexnum, combine4, decrypt, encrypt, extrace, init, decode } = require('../src/handler/parser/');
+const {
+  init,
+  main,
+  swap,
+  hexnum,
+  combine4,
+  decrypt,
+  encrypt,
+  extrace,
+  decode,
+  uuid,
+  numToNumarr4,
+} = require('../src/handler/parser/');
 const tsFullPath = paths.exampleResolve('codes', '1-$_ts-full.json');
 init(JSON.parse(fs.readFileSync(tsFullPath, 'utf8')));
 const gv = require('@src/handler/globalVarible');
@@ -28,8 +40,14 @@ describe('test parser common', () => {
     const arr = encrypt(decrypt('GGZGPQnkMJBUeWs2sLstGIr6oLYDI3AX'), gv.keys[17]);
     expect(extrace(arr)).toEqual([[], [], [47, 115, 103, 116, 109, 105], [], [], [], []]);
   });
-  test('test extrace', () => {
+  test('test decode', () => {
     const arr = extrace(encrypt(decrypt('GGZGPQnkMJBUeWs2sLstGIr6oLYDI3AX'), gv.keys[17]));
     expect(decode(arr[2])).toBe('/sgtmi');
+  });
+  test('test uuid', () => {
+    expect(uuid("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36")).toBe(2290443310);
+  });
+  test('test uuid', () => {
+    expect(numToNumarr4(uuid("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"))).toEqual([136, 133, 100, 46]);
   });
 });

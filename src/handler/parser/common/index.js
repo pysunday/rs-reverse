@@ -6,4 +6,6 @@ exports.encrypt = require('./encrypt');
 exports.decrypt = require('./decrypt');
 exports.extrace = require('./extrace');
 exports.decode = require('./decode');
+exports.uuid = require('./uuid');
+exports.numToNumarr4 = require('./numToNumarr4');
 
