@@ -10,3 +10,7 @@ module.exports = function (num) {
     num & gv.cp2[34]
   ];
 }
+
+module.exports.reverse = function (numarr) {
+  return (numarr[0] << gv.cp2[4] | numarr[1] << gv.cp2[2] | numarr[2] << gv.cp2[52] | numarr[3]) >>> 0;
+}

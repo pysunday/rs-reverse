@@ -1,11 +1,21 @@
+const { execRandomByNumber, execNumberByTime } = require('./random');
+exports.execNumberByTime = execNumberByTime;
+exports.execRandomByNumber = execRandomByNumber;
 exports.main = require('./main');
 exports.swap = require('./swap');
 exports.hexnum = require('./hexnum');
 exports.combine4 = require('./combine4');
-exports.encrypt = require('./encrypt');
+exports.bitwiseTwoNumarr = require('./bitwiseTwoNumarr');
 exports.decrypt = require('./decrypt');
 exports.extrace = require('./extrace');
 exports.decode = require('./decode');
 exports.uuid = require('./uuid');
+exports.numToNumarr2 = require('./numToNumarr2');
 exports.numToNumarr4 = require('./numToNumarr4');
+exports.numToNumarr8 = require('./numToNumarr8');
+exports.string2ascii = require('./string2ascii');
+exports.ascii2string = require('./ascii2string');
+exports.getFixedNumber = require('./getFixedNumber');
+exports.numarrAddTime = require('./numarrAddTime');
+exports.stringEncrypt = require('./stringEncrypt');
 

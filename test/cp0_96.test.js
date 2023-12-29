@@ -27,6 +27,7 @@ const valueMap = {
   '11.678': hexnum(gv.cp0_96(7, 17)),
   '1.234': swap(gv.cp0_96(8, 36)),
   'captureStackTrace': main(gv.cp0_96(7, 63))[0],
+  '16777216': hexnum(gv.cp0_96(6, 76)),
 }
 
 test('test cp0_96', () => {

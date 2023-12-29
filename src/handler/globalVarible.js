@@ -8,6 +8,9 @@ class GlobalVarible {
   get bignum() {
     return cache.bignum;
   }
+  get cfgnum() {
+    return cache.cfgnum;
+  }
   get utils() {
     return cache.utils;
   }

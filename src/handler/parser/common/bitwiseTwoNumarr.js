@@ -1,4 +1,4 @@
-// 加密两个数组生成新数组
+// 将两个数组经过位运算后生成新的数组
 const combine4 = require('./combine4');
 const gv = require('@src/handler/globalVarible');
 
