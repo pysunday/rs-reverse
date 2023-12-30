@@ -1,6 +1,6 @@
 const paths = require('@utils/paths');
 const fs = require('fs');
-const { main, swap, hexnum, init } = require('../src/handler/parser/');
+const { main, swap4, swap2, hexnum, init } = require('../src/handler/parser/');
 const tsFullPath = paths.exampleResolve('codes', '1-$_ts-full.json');
 init(JSON.parse(fs.readFileSync(tsFullPath, 'utf8')));
 const gv = require('@src/handler/globalVarible');
@@ -23,11 +23,12 @@ const gv = require('@src/handler/globalVarible');
 
 const valueMap = {
   'visibilityState': main(gv.cp0_96(6, 69)).join(),
-  'parseFloat': swap(gv.cp0_96(5, 18)) + hexnum(gv.cp0_96(8, 30)),
+  'parseFloat': swap4(gv.cp0_96(5, 18)) + hexnum(gv.cp0_96(8, 30)),
   '11.678': hexnum(gv.cp0_96(7, 17)),
-  '1.234': swap(gv.cp0_96(8, 36)),
+  '1.234': swap4(gv.cp0_96(8, 36)),
   'captureStackTrace': main(gv.cp0_96(7, 63))[0],
   '16777216': hexnum(gv.cp0_96(6, 76)),
+  'avigator': swap2(gv.cp0_96(10, 63)),
 }
 
 test('test cp0_96', () => {

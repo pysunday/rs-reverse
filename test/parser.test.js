@@ -3,7 +3,8 @@ const fs = require('fs');
 const {
   init,
   main,
-  swap,
+  swap4,
+  swap2,
   hexnum,
   combine4,
   decrypt,
@@ -17,6 +18,7 @@ const {
   getFixedNumber,
   numarrAddTime,
   stringEncrypt,
+  encrypt,
 } = require('../src/handler/parser/');
 const tsFullPath = paths.exampleResolve('codes', '1-$_ts-full.json');
 init(JSON.parse(fs.readFileSync(tsFullPath, 'utf8')));
@@ -27,7 +29,8 @@ describe('test parser common', () => {
     expect(main('inakaxadalqKlwl{')[0]).toBe('visibilityState');
   });
   test('test swap', () => {
-    expect(swap('rpsa')).toBe('pars');
+    expect(swap4('rpsa')).toBe('pars');
+    expect(swap2('nvagitaro')).toBe('navigator');
   });
   test('test hexnum', () => {
     expect(hexnum('65466c6f6174')).toBe('eFloat');

@@ -14,6 +14,10 @@ const valueMap = {
   '4': ascii2string(gv.keys[gv.cp2[4]]),
   '47': ascii2string(gv.keys[gv.cp2[35]]),
   '52': ascii2string(gv.keys[gv.cp2[81]]),
+  '_$dV': ascii2string(gv.keys[gv.cp2[146]]),
+  '_$_i': ascii2string(gv.keys[gv.cp2[70]]),
+  '_$hv': ascii2string(gv.keys[gv.cp2[1]]),
+  '_$go': ascii2string(gv.keys[gv.cp2[48]]),
 }
 
 test('test r2mka', () => {
