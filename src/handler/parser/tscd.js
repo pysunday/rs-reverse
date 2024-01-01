@@ -1,6 +1,7 @@
 // 生成密钥
 const gv = require('../globalVarible');
 const decrypt = require('./common/decrypt');
+const logger = require('@utils/logger');
 
 exports.init = function() {
   const cdArr = decrypt(gv.ts.cd);
@@ -18,4 +19,5 @@ exports.init = function() {
     op += gap;
   }
   gv.setAttr('keys', keys);
+  logger.debug('$_ts.cd完成解析!')
 };

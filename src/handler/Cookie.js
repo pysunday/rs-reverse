@@ -61,7 +61,7 @@ module.exports = class {
       gv.cp2[39],
       [gtn('0>one>55>one>3-189', 6)],
     )
-    const cookie = '0' + numarr2string(
+    return '0' + numarr2string(
       encryptMode1([
         ...numToNumarr4(this.r2mkaTime),
         ...numarrJoin(
@@ -86,7 +86,6 @@ module.exports = class {
         numarrAddTime(gv.keys[gv.cp2[2]], this.runTime)[0]
       )
     );
-    console.log(`生成cookie成功! \nlength: ${cookie.length}\ncookie: ${cookie}`)
   }
 
   getSubOne() {

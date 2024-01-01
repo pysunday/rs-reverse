@@ -1,5 +1,6 @@
 const gv = require('../globalVarible');
 const gt3 = require('@src/immutext/').globalText3;
+const logger = require('@utils/logger');
 
 function gtHandler(str, curr) {
   return {
@@ -85,4 +86,5 @@ exports.parse = function(str = gt3) {
 
 exports.init = function() {
   gv.setAttr('r2mka', exports.parse(gt3));
+  logger.debug('头r2mka标识字符串完成解析!')
 }

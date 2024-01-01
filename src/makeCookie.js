@@ -3,11 +3,10 @@ const Coder = require('./handler/Coder');
 const Cookie = require('./handler/Cookie');
 
 module.exports = function (ts) {
-  logger.info(`传入的$_ts.nsd: ${ts.nsd}`);
-  logger.info(`传入的$_ts.cd: ${ts.cd}`);
+  const startTime = new Date().getTime();
   const coder = new Coder(ts);
   const { code, $_ts } = coder.run();
-  const cookie = new Cookie($_ts);
-  cookie.run();
+  const cookie = new Cookie($_ts).run();
+  logger.info([`生成动态cookie成功！用时：${new Date().getTime() - startTime}ms\n`, `Cookie值: ${cookie}`, `Cookie长: ${cookie.length}\n`].join('\n  '))
 }
 
