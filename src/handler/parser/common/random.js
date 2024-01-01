@@ -10,12 +10,11 @@ exports.execNumberByTime = function (times = gv.cp2[58]) {
   return i;
 }
 
-exports.execRandomByNumber = function (nums = gv.cp2[108], arr = []) {
+exports.execRandomByNumber = function (nums = gv.cp2[108]) {
   // 指定次数的随机数取平均值后四舍五入
   if (typeof nums !== 'number') return;
-  if (arr.length === 0) {
-    for (let i = 0; i < nums; i++) arr.push(Math.random());
-  }
+  const arr = []
+  for (let i = 0; i < nums; i++) arr.push(Math.random());
   const avg = _sum(arr) / nums;
   return [
     avg * gv.cp2[28],

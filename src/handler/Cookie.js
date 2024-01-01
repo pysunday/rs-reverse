@@ -38,7 +38,7 @@ module.exports = class {
     }
     this.runTime = Math.floor(new Date().getTime() / 1000); // 运行时间
     this.startTime = this.runTime - 1; // 模拟浏览器启动时间
-    this.firstTime = this.runTime - 1000; // 模拟浏览器第一次载入网页时间
+    this.r2mkaTime = +ascii2string(gv.keys[21]); // r2mka文本解析出来的时间
   }
 
   run() {
@@ -61,13 +61,27 @@ module.exports = class {
       gv.cp2[39],
       [gtn('0>one>55>one>3-189', 6)],
     )
-    
-    const cookie = numarr2string(
+    const cookie = '0' + numarr2string(
       encryptMode1([
-        ...numToNumarr4(this.firstTime),
+        ...numToNumarr4(this.r2mkaTime),
         ...numarrJoin(
-          numarrJoin(gv.r2mka("0>one>32-126").taskarr[73], numarrJoin(numToNumarr4([this.firstTime, this.startTime]), string2ascii(gv.cp0[399])), gv.keys[gv.cp2[56]]),
-          encryptMode1(xor(numarrEncrypt(cookieBaseArr), gv.keys[gv.cp2[56]], gv.cp2[2]), numarrAddTime(gv.keys[gv.cp2[24]], this.runTime)[0], 0)
+          numarrJoin(
+            gv.r2mka("0>one>32-126").taskarr[73],
+            numarrJoin(
+              numToNumarr4([this.r2mkaTime, this.startTime]),
+              string2ascii(gv.cp0[399])
+            ),
+            gv.keys[gv.cp2[56]]
+          ),
+          encryptMode1(
+            xor(
+              numarrEncrypt(cookieBaseArr),
+              gv.keys[gv.cp2[56]],
+              gv.cp2[2]
+            ),
+            numarrAddTime(gv.keys[gv.cp2[24]], this.runTime)[0],
+            0
+          )
         )],
         numarrAddTime(gv.keys[gv.cp2[2]], this.runTime)[0]
       )
@@ -82,12 +96,12 @@ module.exports = class {
       gtn('0>one>62>one>30-272', 550),
       this.config['window.navigator.maxTouchPoints'],
       this.config['window.eval.toString().length'],
-      gtn('0>one>62>one>28-270', 1) | (gtn('0>one>62>one>28-270', 92) << gv.cp2[23]), // check flag
+      gtn('0>one>62>one>28-270', 1) | (gtn('0>one>62>one>28-270', 92) << gv.cp2[23]),
       ...numToNumarr4(uuid(this.config['window.navigator.userAgent'])),
       pfarr.length,
       ...pfarr,
       ...numToNumarr4(_random(500, 1000)),
-      ...execRandomByNumber(), // check flag
+      ...execRandomByNumber(),
       gtn('0>one>62>one>12-246', 28),
       gtn('0>one>62-235', 36),
       ...numToNumarr4(Number(hexnum(gv.cp0_96(6, 76))))
@@ -99,9 +113,9 @@ module.exports = class {
     return [
       flag > 0 && flag < gv.cp2[52] ? 1 : 0,
       gv.cp2[39],
-      ...numToNumarr4(+ascii2string(gv.keys[21]) + 1), // ramka串返回的时间 + 当前时间 - 启动时间
+      ...numToNumarr4(this.r2mkaTime + this.runTime - this.startTime), // ramka串返回的时间 + 当前时间 - 启动时间
       ...numToNumarr4(+ascii2string(gv.keys[gv.cp2[15]])),
-      ...numToNumarr8(Math.floor(Math.random() * gv.cp2[207]) * gv.cp2[16] + ((new Date().getTime() & gv.cp2[17]) >>> 0)),
+      ...numToNumarr8(Math.floor(Math.random() * gv.cp2[207]) * gv.cp2[16] + (((this.runTime * 1000) & gv.cp2[17]) >>> 0)),
       flag,
     ]
   }
