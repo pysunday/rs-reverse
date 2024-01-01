@@ -2,6 +2,7 @@ module.exports = {
   ...require('./random'),
   ...require('./tools'),
   ...require('./swap'),
+  ...require('./modeEncrypt'),
   main: require('./main'),
   hexnum: require('./hexnum'),
   combine4: require('./combine4'),
@@ -17,7 +18,8 @@ module.exports = {
   ascii2string: require('./ascii2string'),
   getFixedNumber: require('./getFixedNumber'),
   numarrAddTime: require('./numarrAddTime'),
-  stringEncrypt: require('./stringEncrypt'),
-  encrypt: require('./encrypt'),
+  numarrEncrypt: require('./numarrEncrypt'),
+  numarr2string: require('./numarr2string'),
+  numarrJoin: require('./numarrJoin'),
 }
 

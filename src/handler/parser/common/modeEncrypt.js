@@ -56,32 +56,55 @@ function getCfg(numarr) {
   return [ret, arr];
 }
 
-function init(valarr) {
-  const cfg = getCfg(valarr);
-  return (namearr, flag) => {
-    const arr = [];
-    let arrcom = combine4(namearr);
-    let arrsub = [];
-    if (flag) {
-      arrsub = arrcom.slice(0, gv.cp2[19]);
-      arrcom = arrcom.slice(gv.cp2[19]);
-    }
-    for (let i = 0; i < arrcom.length / gv.cp2[19]; ) {
-      const next = arrcom.slice(i << gv.cp2[56], ++i << gv.cp2[56]);
-      let val = encode(cfg, next, 1, gv.cfgnum[1]);
-      if (arrsub.length) {
-        val = _zip(val, arrsub).map(([a, b]) => a ^ b);
-      }
-      for (let j = 0; j < val.length; j++) {
-        arr.push(val[j]);
-      }
-      arrsub = next;
-    }
-    const ret = arr.reduce((ans, it) => ([...ans, ...numToNumarr4(it)]), []);
-    return ret.slice(0, ret.length - ret[ret.length - 1]);
+function encryptMode1(valarr, keyarr, flag = 1) {
+  const cfg = getCfg(keyarr);
+  var _$iv, _$j7, _$kb, _$ka, _$dV, _$du, _$jb;
+  const max = Math.floor(valarr.length / gv.cp2[2]) + 1;
+  let ans = [], arr;
+  const fill = gv.cp2[2] - valarr.length % gv.cp2[2];
+  if (flag) {
+    ans = arr = new Array(4).fill(gv.cp2[17]).map(it => Math.floor(Math.random() * it));
   }
+  const copyarr = numToNumarr4.reverse_sign([...valarr, ...new Array(fill).fill(fill)]);
+  for (let i = 0; i < max; ) {
+    let current = copyarr.slice(i << gv.cp2[56], ++i << gv.cp2[56]);
+    if (arr) {
+      current = [0, 1, 2, 3].map(it => current[it] ^ arr[it]);
+    }
+    arr = encode(cfg, current, 0, gv.cfgnum[0]);
+    for (let j = 0; j < arr.length; j++) {
+      ans.push(arr[j]);
+    }
+  }
+  return numToNumarr4(ans);
 }
 
-module.exports = function (text, valarr, idx = 1) {
-  return init(valarr)(decrypt(text), idx);
+function encryptMode2(valarr, keyarr, flag = 1) {
+  const cfg = getCfg(keyarr);
+  const arr = [];
+  let arrcom = combine4(valarr);
+  let arrsub = [];
+  if (flag) {
+    arrsub = arrcom.slice(0, gv.cp2[19]);
+    arrcom = arrcom.slice(gv.cp2[19]);
+  }
+  for (let i = 0; i < arrcom.length / gv.cp2[19]; ) {
+    const next = arrcom.slice(i << gv.cp2[56], ++i << gv.cp2[56]);
+    let val = encode(cfg, next, 1, gv.cfgnum[1]);
+    if (arrsub.length) {
+      val = _zip(val, arrsub).map(([a, b]) => a ^ b);
+    }
+    for (let j = 0; j < val.length; j++) {
+      arr.push(val[j]);
+    }
+    arrsub = next;
+  }
+  const ret = arr.reduce((ans, it) => ([...ans, ...numToNumarr4(it)]), []);
+  return ret.slice(0, ret.length - ret[ret.length - 1]);
 }
+
+module.exports = {
+  encryptMode1,
+  encryptMode2,
+}
+

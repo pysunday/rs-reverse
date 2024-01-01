@@ -2,9 +2,10 @@
 const gv = require('@src/handler/globalVarible');
 const numToNumarr4 = require('./numToNumarr4');
 
-module.exports = function(numarr) {
+module.exports = function(numarr, time) {
+  // time为时间戳除以1000后向上取整，如果不传则取当前时间戳
   const ele = Math.ceil(Math.random() * gv.cp2[30]);
-  const now = Math.floor(new Date().getTime() / 1000);
+  const now = time || Math.floor(new Date().getTime() / 1000);
   const arr = [...numarr, ...numToNumarr4(now)].map(it => it ^ ele);
   arr.push(ele);
   return [arr, now];

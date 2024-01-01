@@ -14,3 +14,11 @@ exports.fibonacci = function (n) {
   if (n <= 1) return n;
   return exports.fibonacci(n - 1) + exports.fibonacci(n - 2);
 }
+
+exports.xor = function (numarr1, numarr2, num) {
+  // 两数组指定位数按位异或
+  for (let i = 0; i < num; i++) {
+    numarr1[i] ^= numarr2[i];
+  }
+  return numarr1;
+}

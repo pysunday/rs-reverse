@@ -1,7 +1,5 @@
-const paths = require('@utils/paths');
-const fs = require('fs');
+const gv = require('../utils/initGv');
 const {
-  init,
   main,
   swap4,
   swap2,
@@ -17,12 +15,10 @@ const {
   execRandomByNumber,
   getFixedNumber,
   numarrAddTime,
-  stringEncrypt,
-  encrypt,
-} = require('../src/handler/parser/');
-const tsFullPath = paths.exampleResolve('codes', '1-$_ts-full.json');
-init(JSON.parse(fs.readFileSync(tsFullPath, 'utf8')));
-const gv = require('@src/handler/globalVarible');
+  numarrEncrypt,
+  encryptMode1,
+  encryptMode2,
+} = gv.utils;
 
 describe('test parser common', () => {
   test('test main', () => {
@@ -77,8 +73,8 @@ describe('test parser common', () => {
     expect(time).toBe(rtime);
     expect(rarr).toEqual([1, 2, 3, 4]);
   });
-  test('test stringEncrypt', () => {
+  test('test modeEncrypt', () => {
     const arr = numarrAddTime(gv.keys[gv.cp2[2]])[0];
-    expect(stringEncrypt('LjFNq_oZCsth6KJ9xHOin6RRhL4fQt7Vsn8YCz9dRjl', arr)).toEqual([166, 66, 100, 55, 95, 100, 1, 0]);
+    expect(encryptMode2(decrypt('LjFNq_oZCsth6KJ9xHOin6RRhL4fQt7Vsn8YCz9dRjl'), arr)).toEqual([166, 66, 100, 55, 95, 100, 1, 0]);
   });
 });

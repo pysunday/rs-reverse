@@ -1,12 +1,5 @@
-const paths = require('@utils/paths');
-const fs = require('fs');
-const {
-  init,
-  ascii2string,
-} = require('../src/handler/parser/');
-const tsFullPath = paths.exampleResolve('codes', '1-$_ts-full.json');
-init(JSON.parse(fs.readFileSync(tsFullPath, 'utf8')));
-const gv = require('@src/handler/globalVarible');
+const gv = require('../utils/initGv');
+const { ascii2string } = gv.utils;
 
 const valueMap = {
   '1698026159': ascii2string(gv.keys[gv.cp2[101]]),

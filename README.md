@@ -48,9 +48,37 @@ Examples:
 
 ### 2.2. makecookie子命令
 
-执行子命令`makecookie`生成cookie。
+执行子命令`makecookie`生成动态代码, 可以传入包含`$_ts.nsd`和`$_ts.cd`的文本文件或者直接给url让程序自己去拿。
 
-进行中...
+该命令首先会执行`makecode`子命令拿到完整的`$_ts`值，再运行makecookie算法生成cookie。
+
+`makecookie`命令与`makecode`使用方式类似：
+
+```console
+ $ node main.js makecode -h
+main.js makecode
+
+生成动态代码
+
+Options:
+  -h             显示帮助信息                                          [boolean]
+  -f, --file     含有nsd, cd值的json文件                                [string]
+  -u, --url      瑞数返回204状态码的请求地址                            [string]
+  -v, --version  显示版本号                                            [boolean]
+
+Examples:
+  main.js makecode -f example/codes/1-$_ts.json
+  main.js makecode -u http://url/path
+```
+
+调用示例：
+
+```bash
+ $ node main.js makecookie -f example/codes/1-\$_ts.json
+生成cookie成功!
+length: 235
+cookie: Ma8ZARIJYUhRLQrrW7Tn51DkRxBo87ofVj83ovbQLwChJdyC8LdJ69FkMO4HO.aUp9i4Qhanlv6MKa6bjuXiEvYZPLR89msKwqOJJtiL.yLk7aqwx_H2fNcMVG2zGif089rVFrdWA8dvO3Rh5iSH3sCcDuw2YHI18DvuiXTCGKrvtGXReJEYPh6pGFiZ9sONokiTCNkyqSjZIk6izfi2cg5Rba2Orfg0JCEuwWMTiBL
+```
 
 ## 3. 手动获取动态代码和$_ts的方法
 
