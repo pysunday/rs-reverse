@@ -4,6 +4,16 @@
 
 **点赞是我坚持的动力，希望该研究也能给一样好奇瑞数原理的人答疑解惑。**
 
+## 0. 声明
+
+该项目下代码仅用于个人学习、研究或欣赏。通过使用该仓库相关代码产生的风险与仓库代码作者无关。
+
+该瑞数cookie生成过程中的算法逆向仍存在以下问题：
+
+1. 预先设置好的配置项，参见：[代码中config的值](https://github.com/pysunday/rs-reverse/blob/main/src/handler/Cookie.js#L32);
+2. 代码中`getSubThree`方法中的[数字46228](https://github.com/pysunday/rs-reverse/blob/main/src/handler/Cookie.js#L115)为作者代码格式化且代码修改后运行代码计算的值;
+3. 代码中`getSubOne`方法中的[`_random(500, 1000)`](https://github.com/pysunday/rs-reverse/blob/main/src/handler/Cookie.js#L89)为作者电脑运行计算的大概值，此值与浏览器运行环境有关(如电脑配置等);
+
 ## 1. 博客文章
 
 1. [瑞数vmp-动态代码生成原理](https://howduudu.tech/#/blog/article/1701276778000)
