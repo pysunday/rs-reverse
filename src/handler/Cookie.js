@@ -27,8 +27,8 @@ const {
 } = parser;
 
 module.exports = class {
-  constructor(ts) {
-    parser.init(ts)
+  constructor(ts, r2mkaText) {
+    parser.init(ts, r2mkaText)
     this.config = {
       'window.navigator.maxTouchPoints': 0,
       'window.eval.toString().length': 33,

@@ -6,15 +6,17 @@ const immutext = require('@src/immutext/');
 const initTs = require('./initTs');
 
 module.exports = class {
-  constructor(ts) {
+  constructor(ts, immucfg) {
     this.startTime = new Date().getTime();
-    this.$_ts = initTs(ts);
+    this.$_ts = initTs(ts, immucfg);
     this.scd = getScd(this.$_ts.nsd);
     this.keynames = this.$_ts.cp[1];
     this.keycodes = []
     this.optext = globaltext();
     this.opmate = this.mateOper();
     this.opdata = dataOper();
+    this.r2mkaText = null;
+    this.immucfg = immucfg || immutext;
   }
 
   run() {
@@ -43,7 +45,7 @@ module.exports = class {
 
   parseGlobalText2() {
     const { opmate, opdata, optext, keynames, getCurr } = this;
-    optext.init(0, immutext.globalText2);
+    optext.init(0, this.immucfg.globalText2);
     opdata.init();
     opmate.init();
     opmate.setMate('G_$ht', true);
@@ -62,7 +64,7 @@ module.exports = class {
 
   parseGlobalText1(codeArr = []) {
     const { opmate, opdata, optext, keynames, getCurr } = this;
-    optext.init(0, immutext.globalText1);
+    optext.init(0, this.immucfg.globalText1);
     opdata.init({ arr8: [4, 16, 64, 256, 1024, 4096, 16384, 65536] });
     opmate.init();
     opmate.setMate('G_$e4', true);
@@ -73,7 +75,8 @@ module.exports = class {
     opmate.setMate();
     this.keycodes.push(...optext.getLine(optext.getCode() * 55295 + optext.getCode()).split(String.fromCharCode(257)));
     opmate.setMate();
-    this.keycodes.push(optext.getLine(optext.getCode() * 55295 + optext.getCode()));
+    this.r2mkaText = optext.getLine(optext.getCode() * 55295 + optext.getCode())
+    this.keycodes.push(this.r2mkaText);
     opmate.setMate('G_$gG', true);
     for (let i = 0; i < opmate.getMateOri('G_$gG'); i++) {
       this.gren(i, codeArr);

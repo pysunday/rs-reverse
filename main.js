@@ -11,6 +11,8 @@ const pkg = require(paths.package);
 const request = require('request-promise');
 const cheerio = require('cheerio');
 const log4js = require('log4js');
+const urlresolve = require('url').resolve;
+const adapt = require('@src/adapt');
 
 function debugLog(level) {
   if (level) {
@@ -23,6 +25,24 @@ function debugLog(level) {
   logger.trace('filePath:', __filename);
   logger.trace('processCwd:', process.cwd());
   logger.trace('paths:\n', JSON.stringify(paths, null, 2));
+}
+
+const getCode = async (url) => {
+  if (!isValidUrl(url)) throw new Error('输入链接不正确');
+  const res = await request(url)
+  const $ = cheerio.load(res);
+  const scripts = [...$('script')]
+  const tsscript = scripts.map(ele => $(ele).text()).filter(text => text.includes('$_ts.nsd') && text.includes('$_ts.cd'));
+  if (!tsscript.length) throw new Error('链接返回结果未找到cd或nsd');
+  const $_ts = Function('window', tsscript[0] + 'return $_ts')({});
+  const checkSrc = (src) => src?.split('.').pop() === 'js' ? src : undefined;
+  const remotes = scripts.map(it => checkSrc(it.attribs.src)).filter(Boolean);
+  if (!remotes.length) throw new Error('未找到js外链，无法提取配置文本请检查!');
+  for(let src of remotes) {
+    const jscode = await request(urlresolve(url, src));
+    if (jscode.includes('r2mKa')) return { $_ts, jscode };
+  }
+  throw new Error('js外链中没有瑞数的代码文件');
 }
 
 const commandBuilder = {
@@ -45,28 +65,25 @@ const commandBuilder = {
     alias: 'url',
     describe: '瑞数返回204状态码的请求地址',
     type: 'string',
-    coerce: async (input) => {
-      if (!isValidUrl(input)) throw new Error('输入链接不正确');
-      try {
-        const res = await request(input)
-        const $ = cheerio.load(res);
-        const scripts = [...$('script')].map(ele => $(ele).text())
-        .filter(text => text.includes('$_ts.nsd') && text.includes('$_ts.cd'));
-        if (!scripts.length) throw new Error('链接返回结果未找到cd或nsd');
-        return Function('window', scripts[0] + 'return $_ts')({});
-      } catch(err) {
-        throw new Error('输入链接无效');
-      }
-    }
+    coerce: getCode,
+  },
+  a: {
+    alias: 'adapt',
+    describe: '已经做了适配的网站名称，不传则为cnipa',
+    type: 'string',
   }
 }
 
 const commandHandler = (command, argv) => {
   debugLog(argv.level);
-  const ts = argv.file || argv.url || require(paths.exampleResolve('codes/1-\$_ts.json'));
+  const ts = argv.url?.$_ts || argv.file || require(paths.exampleResolve('codes/1-\$_ts.json'));
   logger.trace(`传入的$_ts.nsd: ${ts.nsd}`);
   logger.trace(`传入的$_ts.cd: ${ts.cd}`);
-  command(ts);
+  if (argv.url) {
+    command(ts, adapt(argv.url.jscode, argv.adapt));
+  } else {
+    command(ts);
+  }
 }
 
 module.exports = yargs

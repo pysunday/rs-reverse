@@ -84,7 +84,7 @@ exports.parse = function(str = gt3) {
   return parse(deepParse());
 };
 
-exports.init = function() {
-  gv.setAttr('r2mka', exports.parse(gt3));
+exports.init = function(r2mkaText) {
+  gv.setAttr('r2mka', exports.parse(r2mkaText || gt3));
   logger.debug('头r2mka标识字符串完成解析!')
 }

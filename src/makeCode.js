@@ -3,9 +3,9 @@ const paths = require('@utils/paths');
 const logger = require('@utils/logger');
 const fs = require('fs');
 
-module.exports = function (ts) {
+module.exports = function (ts, immucfg) {
   const startTime = new Date().getTime();
-  const coder = new Coder(ts);
+  const coder = new Coder(ts, immucfg);
   const { code, $_ts } = coder.run();
   const files = [
     {

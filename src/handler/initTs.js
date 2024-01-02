@@ -9,11 +9,11 @@ function grenJf () {
   return !flag;
 }
 
-module.exports = function(defdata) {
+module.exports = function(defdata, immucfg = immutext.$_ts) {
   const cp = [];
-  cp[0] = immutext.$_ts.cp0;
+  cp[0] = immucfg.cp0;
   cp[1] = grenKeys(806, defdata.nsd);
-  cp[2] = immutext.$_ts.cp2;
+  cp[2] = immucfg.cp2;
   cp[6] = '';
   return {
     nsd: 0,
