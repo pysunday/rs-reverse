@@ -51,7 +51,7 @@ const commandBuilder = {
     describe: '含有nsd, cd值的json文件',
     type: 'string',
     coerce: (input) => {
-      if (['1', '2'].includes(input)) input = paths.exampleResolve(`codes/${input}-\$_ts.json`);
+      if (['1', '2'].includes(input)) input = paths.exampleResolve('codes', `${input}-\$_ts.json`);
       if (!fs.existsSync(input)) throw new Error(`输入文件不存在: ${input}`);
       return JSON.parse(fs.readFileSync(paths.resolve(input), 'utf8'));
     }
@@ -76,7 +76,7 @@ const commandBuilder = {
 
 const commandHandler = (command, argv) => {
   debugLog(argv.level);
-  const ts = argv.url?.$_ts || argv.file || require(paths.exampleResolve('codes/1-\$_ts.json'));
+  const ts = argv.url?.$_ts || argv.file || require(paths.exampleResolve('codes', '1-\$_ts.json'));
   logger.trace(`传入的$_ts.nsd: ${ts.nsd}`);
   logger.trace(`传入的$_ts.cd: ${ts.cd}`);
   if (argv.url) {
@@ -123,7 +123,7 @@ module.exports = yargs
         describe: '拥有完整$_ts的json文件',
         type: 'string',
         coerce: (input) => {
-          if (['1', '2'].includes(input)) return paths.exampleResolve(`codes/${input}-\$_ts-full.json`);
+          if (['1', '2'].includes(input)) return paths.exampleResolve('codes', `${input}-\$_ts-full.json`);
           return input;
         }
       },

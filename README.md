@@ -24,7 +24,7 @@
 
 **`npx rs-reverse *`与在当前目录下运行`node main.js *`相对应**
 
-如npx运行的包不是最新的，可以加上-p参数后执行如：`npx -p rs-reverse@latest rs-reverse makecookie`，非官方源可能存在版本不同步问题。
+如npx运行的包不是最新的，可以加上-p参数后执行如：`npx -p rs-reverse@latest rs-reverse makecookie`，非官方源可能存在版本不同步问题，建议拉取时使用官方源：`--registry=https://registry.npmjs.org`。
 
 npm包不能保证最新代码，最新代码以仓库代码为准!
 

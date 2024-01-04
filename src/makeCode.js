@@ -17,7 +17,7 @@ module.exports = function (ts, immucfg) {
     {
       name: 'makecode_output_code',
       desc: '输出动态代码：',
-      text: code,
+      text: '// 该行标记来源，非动态代码生成: ' + JSON.stringify(ts) + '\n\n' + code,
       extend: 'js',
     },
     immucfg ? {
