@@ -3,14 +3,14 @@ const monitor = require('@utils/monitor');
 const logger = require('@utils/logger');
 
 module.exports = function(...params) {
-  logger.info('执行开始!');
+  logger.trace('执行开始!');
   try {
     return dynamicExec(...params);
   } catch (err) {
     logger.error(String(err));
     process.exit();
   } finally {
-    logger.info('执行结束!');
+    logger.trace('执行结束!');
   }
 }
 
@@ -19,7 +19,7 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
   loop_res = monitor(loop_res, 'loop_res', { getLog: true, setLog: true, getCb: (key) => {if(['81', '83'].includes(key))debugger}});
   global_res = monitor(global_res, 'global_res', { getLog: true, setLog: true });
   if (typeof task === 'string') task = gv.r2mka(task).taskarr;
-  console.log(`动态代码运行，任务列表：${task}, 起点：${start}，长度：${task.length}`);
+  logger.trace(`动态代码运行，任务列表：${task}, 起点：${start}，长度：${task.length}`);
   const data = [];
   const ret = [];
   ret[0] = args;
@@ -97,7 +97,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
         d_cursor -= 3;
         temp1 = d_cursor;
         setTarget();
-        console.log(target);
         target = target[tarkey];
         temp1 = target(data[temp1], data[temp1 + 1], data[temp1 + 2]);
         break;
@@ -593,7 +592,7 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
       tarkey = data[--d_cursor];
       target = data[--d_cursor];
     } else if (next > 24 && next <= 27) {
-      console.log(`[no] 设置关键对象与下标：${next}`)
+      logger.trace(`[no] 设置关键对象与下标：${next}`)
       // temp3 = task[++t_cursor];
       // tarkey = task[++t_cursor];
       // target = ret[3][temp3];
@@ -624,7 +623,7 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
       task[t_cursor] = tarkey;
       target = data[--d_cursor];
     } else if (next > 99 && next <= 104) {
-      console.log(`[no] 设置关键对象与下标：${next}`)
+      logger.trace(`[no] 设置关键对象与下标：${next}`)
       // temp3 = task[++t_cursor];
       // tarkey = task[++t_cursor];
       // target = ret[1][temp3];

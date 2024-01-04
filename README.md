@@ -24,11 +24,16 @@
 
 **`npx rs-reverse *`与在当前目录下运行`node main.js *`相对应**
 
+如npx运行的包不是最新的，可以加上-p参数后执行如：`npx -p rs-reverse@latest rs-reverse makecookie`，非官方源可能存在版本不同步问题。
+
+npm包不能保证最新代码，最新代码以仓库代码为准!
+
 ### 2.1. makecode子命令
 
-> 体验命令：`npx rs-reverse makecode`
+执行子命令`makecode`生成动态代码, 可以传入包含`$_ts.nsd`和`$_ts.cd`的文本文件或者直接给url让程序自己去拿，命令示例:
 
-执行子命令`makecode`生成动态代码, 可以传入包含`$_ts.nsd`和`$_ts.cd`的文本文件或者直接给url让程序自己去拿。
+1. npx方式：`npx rs-reverse makecode`
+2. 文件方式：`node main.js makecode`
 
 如运行：`npx rs-reverse makecode -u http://wcjs.sbj.cnipa.gov.cn/sgtmi`，后生成三个文件：
 

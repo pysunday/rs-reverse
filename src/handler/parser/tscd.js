@@ -41,7 +41,7 @@ function getTaskarr(arr, idx, ans = []) {
 
 function getOffset(arr) {
   const [task0, task1, task2, task3] = getTaskarr(arr, arr[3]);
-  console.log([task0, task1, task3]);
+  logger.trace([task0, task1, task3]);
   const l81 = gv.r2mka("0-0").taskarr[42] + gv.cp2[56];
   const l83 = (gv.cp0_96(1, gv.r2mka("0-0").taskarr[57]).charCodeAt() + l81) * l81;
   const offset = dynamicExec('0>one>22-24', 0, undefined, {
