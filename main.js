@@ -118,12 +118,20 @@ module.exports = yargs
         type: 'string',
         demandOption: true,
       },
+      f: {
+        alias: 'file',
+        describe: '拥有完整$_ts的json文件',
+        type: 'string',
+        coerce: (input) => {
+          if (['1', '2'].includes(input)) return paths.exampleResolve(`codes/${input}-\$_ts-full.json`);
+          return input;
+        }
+      },
     },
-    handler: commandHandler.bind(null, makeCookie),
     handler: (argv) => {
       debugLog(argv.level);
       Math.random = () => 0.1253744220839037;
-      const gv = require('@utils/initGv');
+      const gv = require('@utils/initGv')(argv.file);
       Object.assign(global, gv.utils);
       const output = JSON.stringify(eval(argv.code));
       console.log([`\n  输入：${argv.code}`, `输出：${output}\n`].join('\n  '));

@@ -1,4 +1,4 @@
-const gv = require('../utils/initGv');
+const gv = require('../utils/initGv')();
 const { main, swap4, swap2, hexnum, init } = gv.utils;
 /*
     setData('G_$cc', cp0[0]);

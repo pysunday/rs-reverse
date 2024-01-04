@@ -1,4 +1,4 @@
-const gv = require('../utils/initGv');
+const gv = require('../utils/initGv')();
 const {
   main,
   swap4,

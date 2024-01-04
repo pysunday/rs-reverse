@@ -2,6 +2,8 @@ const logger = require('@utils/logger');
 const Coder = require('./handler/Coder');
 const Cookie = require('./handler/Cookie');
 const unescape = require('@utils/unescape');
+const paths = require('@utils/paths');
+const fs = require('fs');
 
 function parseR2mka(text) {
   const start = text.indexOf('"') + 1;
@@ -9,7 +11,28 @@ function parseR2mka(text) {
   return unescape(text.substr(start, end));
 }
 
+function writefile(ts, immucfg) {
+  // 如果是url形式的则保存ts和immucfg
+  const now = new Date().getTime();
+  const files = [
+    {
+      name: `makecookie_url_ts_${now}`,
+      desc: 'url方式提取的ts：',
+      text: JSON.stringify(ts),
+    },
+    {
+      name: `makecookie_url_immutext_${now}`,
+      desc: 'url方式提取的静态文本：',
+      text: JSON.stringify(immucfg),
+    },
+  ].map(it => ({ ...it, filepath: paths.outputResolve(it.name) + '.json' }))
+  if (!fs.existsSync(paths.outputPath)) fs.mkdirSync(paths.outputPath);
+  files.forEach(({ filepath, text }) => fs.writeFileSync(filepath, text))
+  logger.info('url方式保存文件：\n\n  ' + files.reduce((ans, it, idx) => ([...ans, `${it.desc}${it.filepath}${idx === files.length - 1 ? '\n' : ''}`]), []).join('\n  '));
+}
+
 module.exports = function (ts, immucfg) {
+  if (immucfg) writefile(ts, immucfg);
   const startTime = new Date().getTime();
   const coder = new Coder(ts, immucfg);
   const { code, $_ts } = coder.run();
