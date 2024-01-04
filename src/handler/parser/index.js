@@ -4,8 +4,8 @@ const logger = require('@utils/logger');
 
 function init(ts, r2mkaText) {
   const startTime = new Date().getTime();
-  gv.setAttr('utils', common);
-  gv.setAttr('ts', ts);
+  gv._setAttr('utils', common);
+  gv._setAttr('ts', ts);
   require('./r2mka').init(r2mkaText);
   require('./tscp').init();
   require('./tscd').init();

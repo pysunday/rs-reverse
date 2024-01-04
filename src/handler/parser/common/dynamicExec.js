@@ -14,12 +14,12 @@ module.exports = function(...params) {
   }
 }
 
-function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = []) {
-  args = monitor(args, 'args', { getLog: true, setLog: true });
-  loop_res = monitor(loop_res, 'loop_res', { getLog: true, setLog: true, getCb: (key) => {if(['81', '83'].includes(key))debugger}});
-  global_res = monitor(global_res, 'global_res', { getLog: true, setLog: true });
-  if (typeof task === 'string') task = gv.r2mka(task).taskarr;
-  logger.trace(`动态代码运行，任务列表：${task}, 起点：${start}，长度：${task.length}`);
+function dynamicExec(taskItem, start = 0, args = [], loop_res = {}, global_res = {}) {
+  const { key, taskarr: task } = taskItem;
+  args = monitor(args, '${key}_args', { getLog: true, setLog: true });
+  loop_res = monitor(loop_res, `${key}_loop_res`, { getLog: true, setLog: true });
+  global_res = monitor(global_res, `${key}_global_res`, { getLog: true, setLog: true });
+  logger.trace(`动态代码运行，任务列表：${key}, 起点：${start}，长度：${task.length}`);
   const data = [];
   const ret = [];
   ret[0] = args;
@@ -32,7 +32,7 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
   const len = task.length;
   const notCheckTask = [11, 15, 27, 32, 48, 51, 59, 84, 104, 109];
   for (t_cursor = start; t_cursor < len; t_cursor++) {
-    // console.log(`${notCheckTask.includes(task[t_cursor]) ? '[no]' : '[ok]'}【${++runtimes}, ${t_cursor}】运行 case（${task[t_cursor]}）`);
+    logger.trace(`${notCheckTask.includes(task[t_cursor]) ? '[no]' : '[ok]'}【${++runtimes}, ${t_cursor}】${key} 运行 case（${task[t_cursor]}）`);
     switch (task[t_cursor]) {
       case 0:
         temp1 = data[--d_cursor];
@@ -89,7 +89,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
       case 11:
         // temp3 = task[++t_cursor];
         // data[d_cursor++] = ret[3][temp3][task[++t_cursor]];
-        notCheckTask.push(task[t_cursor]);
         break;
       case 12:
         return data[--d_cursor];
@@ -107,7 +106,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
       case 15:
         // temp3 = task[++t_cursor];
         // data[d_cursor++] = ret[1][temp3][task[++t_cursor]];
-        notCheckTask.push(task[t_cursor]);
         break;
       case 16:
         d_cursor--;
@@ -189,7 +187,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
       case 32:
         // _$cG(_$$I, task[++t_cursor], task[++t_cursor], temp2 = task[++t_cursor], task[++t_cursor], t_cursor + 1, ret[2], ret);
         // ret[4] ? t_cursor = len : t_cursor += temp2;
-        notCheckTask.push(task[t_cursor]);
         break;
       case 33:
         tarkey = task[++t_cursor];
@@ -271,7 +268,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
       case 48:
         // tarkey = task[++t_cursor];
         // data[d_cursor++] = _$_w(_$$I._$hW[tarkey], ret);
-        notCheckTask.push(task[t_cursor]);
         break;
       case 49:
         d_cursor -= 2;
@@ -289,7 +285,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
         // d_cursor -= temp2;
         // setTarget();
         // data[d_cursor++] = _$fH(target[tarkey], temp4);
-        notCheckTask.push(task[t_cursor]);
         break;
       case 52:
         temp1 = data[--d_cursor];
@@ -325,7 +320,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
         // temp1 = _$kG[tarkey];
         // task[t_cursor] = temp1;
         // data[d_cursor++] = temp1;
-        notCheckTask.push(task[t_cursor]);
         break;
       case 60:
         temp1 = data[--d_cursor];
@@ -446,7 +440,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
         // temp2 = target[temp1];
         // temp2 == _$an ? temp2 = task[++t_cursor] : ++t_cursor;
         // t_cursor += temp2;
-        notCheckTask.push(task[t_cursor]);
         break;
       case 85:
         setTarget();
@@ -543,7 +536,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
         // temp3 = task[++t_cursor];
         // tarkey = task[++t_cursor];
         // target = ret[1][temp3];
-        notCheckTask.push(task[t_cursor]);
         break;
       case 105:
         tarkey = task[++t_cursor];
@@ -571,7 +563,6 @@ function dynamicExec(task, start = 0, args = [], loop_res = [], global_res = [])
         // d_cursor -= temp2;
         // setTarget();
         // temp1 = _$fH(target[tarkey], temp4);
-        notCheckTask.push(task[t_cursor]);
         break;
       case 110:
         temp1 = data[--d_cursor];

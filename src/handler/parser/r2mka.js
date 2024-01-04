@@ -37,6 +37,7 @@ const parse = (() => {
     } else {
       val.taskarr = str.split('').map(it => it.charCodeAt());
     }
+    val.taskori = val.taskarr; // taskarr会被动态修改，因此存一个备份
     val.key = `${deeps.join('>')}-${count++}`;
     valMap[val.key] = val;
     val.child_one.map((it, idx) => {
@@ -85,6 +86,6 @@ exports.parse = function(str = gt3) {
 };
 
 exports.init = function(r2mkaText) {
-  gv.setAttr('r2mka', exports.parse(r2mkaText || gt3));
+  gv._setAttr('r2mka', exports.parse(r2mkaText || gt3));
   logger.debug('头r2mka标识字符串完成解析!')
 }

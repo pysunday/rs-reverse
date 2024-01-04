@@ -48,6 +48,6 @@ function makeBignum() {
 }
 
 exports.init = function() {
-  gv.setAttr('bignum', makeBignum());
-  gv.setAttr('cfgnum', makeCfgnum());
+  gv._setAttr('bignum', makeBignum());
+  gv._setAttr('cfgnum', makeCfgnum());
 }

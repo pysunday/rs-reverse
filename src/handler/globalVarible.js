@@ -44,7 +44,10 @@ class GlobalVarible {
     // 返回密钥集合
     return cache.keys;
   }
-  setAttr(attr, value) {
+  _getAttr(attr) {
+    return cache[attr];
+  }
+  _setAttr(attr, value) {
     cache[attr] = value;
     if (attr === 'cp0') {
       cache.cp0_96 = _chunk(value, 96);

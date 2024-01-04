@@ -13,7 +13,7 @@ const appDirectory = (() => {
 const resolveApp = (...relativePath) => path.resolve(appDirectory, ...relativePath);
 
 module.exports = {
-  basePath: resolveApp(''),
+  basePath: resolveApp('.'),
   modulePath: resolveApp('node_modules'),
   binPath: resolveApp('node_modules', '.bin'),
   package: resolveApp('package.json'),

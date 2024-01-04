@@ -4,6 +4,7 @@ const Cookie = require('./handler/Cookie');
 const unescape = require('@utils/unescape');
 const paths = require('@utils/paths');
 const fs = require('fs');
+const gv = require('@src/handler/globalVarible');
 
 function parseR2mka(text) {
   const start = text.indexOf('"') + 1;
@@ -32,6 +33,7 @@ function writefile(ts, immucfg) {
 }
 
 module.exports = function (ts, immucfg) {
+  gv._setAttr('_ts', ts);
   if (immucfg) writefile(ts, immucfg);
   const startTime = new Date().getTime();
   const coder = new Coder(ts, immucfg);
