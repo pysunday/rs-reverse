@@ -1,6 +1,7 @@
 #!/usr/bin/env node
+const path = require('path');
 const paths = require('./utils/paths');
-require('module-alias')(paths.package);
+require('module-alias')(path.dirname(paths.package));
 const yargs = require('yargs');
 const fs = require('fs');
 const makeCode = require('@src/makeCode');
