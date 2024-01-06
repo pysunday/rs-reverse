@@ -9,3 +9,6 @@ package-lock.json
 yarn.lock
 .history
 *.swp
+docs/
+temp/
+json/

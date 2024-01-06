@@ -1,6 +1,6 @@
 {
   "name": "rs-reverse",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "瑞数算法逆向,website reverse engineering",
   "main": "main.js",
   "directories": {
@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "jest ./test/",
-    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand ./test/"
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand ./test/",
+    "release": "release-it"
   },
   "logLevel": "info",
   "repository": {
@@ -23,7 +24,15 @@
     "瑞数",
     "瑞数算法逆向"
   ],
-  "files": ["package.json", "README.md", "utils", "main.js", "test", "src", "example"],
+  "files": [
+    "package.json",
+    "README.md",
+    "utils",
+    "main.js",
+    "test",
+    "src",
+    "example"
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -50,5 +59,14 @@
     "@": ".",
     "@src": "./src",
     "@utils": "./utils"
-  }
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^8.0.1",
+    "release-it": "^17.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "homepage": "https://github.com/pysunday/rs-reverse#readme",
+  "bugs": "https://github.com/pysunday/rs-reverse/issues"
 }
