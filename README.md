@@ -105,6 +105,8 @@ Examples:
   url方式提取的ts：/path/to/output/makecookie_url_ts_1704391389883.json
   url方式提取的静态文本：/path/to/output/makecookie_url_immutext_1704391389883.json
 
+  存在meta-content值：n5fQ9G1lGvUzfS_yMHx30yYAbp2_NDZI 解析结果：/sgtmi
+
   Cookie值: 0yk64LrpoFnc8Wi4Mmu_rijgRRoC2SHY1bQlR2_QZ805_CqRd1uOgGRnlEvHvXSoQuwkx_fwn4iQnPDFrQigm1b4GnD61Pf9vU5XKtJtAWIoWeG_22OLiccUwGjI0lQaJ_jaYIBFygNsPSPf_0GnJyT1umFrFgAkAoqh1s0G9IDE1uPEM3PV8M1J.wbKdSgMLg8T3bGD5w2sHHohKfnwsT7bMNbb8xbjSxsn8qb8AvY0
   Cookie长: 236
 

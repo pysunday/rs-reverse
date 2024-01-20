@@ -2,6 +2,7 @@ const _random = require('lodash/random');
 const dataOper = require('./dataOper');
 const parser = require('./parser/');
 const gv = require('./globalVarible');
+const randomUseragent = require('random-useragent');
 
 const {
   factorial,
@@ -32,9 +33,21 @@ module.exports = class {
     this.config = {
       'window.navigator.maxTouchPoints': 0,
       'window.eval.toString().length': 33,
-      'window.navigator.userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+      'window.navigator.userAgent': randomUseragent.getRandom(),
       'window.navigator.platform': 'MacIntel',
       'window.name': '$_YWTU=LjFNq_oZCsth6KJ9xHOin6RRhL4fQt7Vsn8YCz9dRjl&$_YVTX=Wa&vdFm=_$hh',
+      'window.navigator.battery': {
+        charging: true, // 正在充电
+        chargingTime: 0, // 距离充满时间
+        dischargingTime: Infinity, // 预估可使用时间
+        level: 1, // 电量100%
+      },
+      'window.navigator.connection': {
+        downlink: 6.66, // 下行速度
+        effectiveType: "4g", // 网络类型
+        rtt: 0, // 往返延时
+        saveData: false, // 节流模式
+      },
     }
     this.runTime = Math.floor(new Date().getTime() / 1000); // 运行时间
     this.startTime = this.runTime - 1; // 模拟浏览器启动时间
@@ -57,7 +70,7 @@ module.exports = class {
       gv.cp2[56],
       this.getSubFive(),
       gv.cp2[6],
-      [gv.cp2[52], 0], // 网络类型检测通过
+      this.getSubSix(),
       gv.cp2[39],
       [gtn('0>one>55>one>3-189', 6)],
     )
@@ -137,8 +150,8 @@ module.exports = class {
     }, {});
     return [
       1, 0, 0, 0, 0, 0,
-      ...encryptMode2(decrypt(name.$_YWTU), keyarr),
-      ...numToNumarr2(+decode(decrypt(name.$_YVTX))),
+      ...encryptMode2(decrypt(name.$_YWTU || ''), keyarr),
+      ...numToNumarr2(+decode(decrypt(name.$_YVTX || ''))),
     ];
   }
 
@@ -148,6 +161,24 @@ module.exports = class {
       fibonacci(gv.cp2[57]) + gv.cp2[43],
       factorial(gv.cp2[55]) / gv.cp2[19],
       gv.cp2[57],
+    ]
+  }
+
+  getSubSix() {
+    // 网络与电量信息
+    const { connType } = this.config['window.navigator.connection'];
+    const { charging, chargingTime, level } = this.config['window.navigator.battery']
+    const connTypeIdx = ['bluetooth', 'cellular', 'ethernet', 'wifi', 'wimax'].indexOf(connType) + 1;
+    let oper = 0;
+    if (level) oper |= gv.cp2[56];
+    if (charging) oper |= 1;
+    if (connTypeIdx !== undefined) oper |= gv.cp2[52]
+    return [
+      oper,
+      level * 100,
+      chargingTime >> gv.cp2[52],
+      chargingTime & gv.cp2[34],
+      connTypeIdx,
     ]
   }
 

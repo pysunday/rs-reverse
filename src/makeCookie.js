@@ -40,6 +40,10 @@ module.exports = function (ts, immucfg) {
   const { code, $_ts } = coder.run();
   const r2mkaText = parseR2mka(coder.r2mkaText);
   const cookie = new Cookie($_ts, r2mkaText).run();
+  if (gv.metaContent) {
+    logger.info(`存在meta-content值：${gv.metaContent.content} 解析结果：${gv.metaContent.value}`);
+  }
   logger.info([`生成动态cookie成功！用时：${new Date().getTime() - startTime}ms\n`, `Cookie值: ${cookie}`, `Cookie长: ${cookie.length}\n`].join('\n  '))
+  return cookie;
 }
 

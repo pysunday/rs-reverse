@@ -22,3 +22,5 @@ exports.xor = function (numarr1, numarr2, num) {
   }
   return numarr1;
 }
+
+exports.stringReverse = (str) => str.split('').reverse().join('');

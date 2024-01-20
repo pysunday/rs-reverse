@@ -1,5 +1,5 @@
 const gv = require('../utils/initGv')();
-const { main, swap4, swap2, hexnum, init } = gv.utils;
+const { main, swap4, swap2, hexnum, stringReverse, init } = gv.utils;
 /*
     setData('G_$cc', cp0[0]);
     setData('G_$ia', cp0[1]);
@@ -25,6 +25,7 @@ const valueMap = {
   'captureStackTrace': main(gv.cp0_96(7, 63))[0],
   '16777216': hexnum(gv.cp0_96(6, 76)),
   'navigator': swap2(gv.cp0_96(10, 63)),
+  'getBattery': gv.cp0_96(4, 6) + gv.cp0_96(4, 55) + stringReverse(gv.cp0_96(6, 55)),
 }
 
 test('test cp0_96', () => {

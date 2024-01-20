@@ -5,6 +5,9 @@ const _get = require('lodash/get');
 const cache = {};
 
 class GlobalVarible {
+  get metaContent() {
+    return cache.metaContent;
+  }
   get bignum() {
     return cache.bignum;
   }

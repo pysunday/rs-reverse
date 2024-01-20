@@ -14,6 +14,7 @@ const cheerio = require('cheerio');
 const log4js = require('log4js');
 const urlresolve = require('url').resolve;
 const adapt = require('@src/adapt');
+const _get = require('lodash/get');
 
 function debugLog(level) {
   if (level) {
@@ -32,10 +33,11 @@ const getCode = async (url) => {
   if (!isValidUrl(url)) throw new Error('输入链接不正确');
   const res = await request(url)
   const $ = cheerio.load(res);
-  const scripts = [...$('script')]
+  const scripts = [...$('script[r=m]')]
   const tsscript = scripts.map(ele => $(ele).text()).filter(text => text.includes('$_ts.nsd') && text.includes('$_ts.cd'));
   if (!tsscript.length) throw new Error('链接返回结果未找到cd或nsd');
   const $_ts = Function('window', tsscript[0] + 'return $_ts')({});
+  $_ts.metaContent = _get($('meta[r=m]'), '0.attribs.content');
   const checkSrc = (src) => src?.split('.').pop() === 'js' ? src : undefined;
   const remotes = scripts.map(it => checkSrc(it.attribs.src)).filter(Boolean);
   if (!remotes.length) throw new Error('未找到js外链，无法提取配置文本请检查!');

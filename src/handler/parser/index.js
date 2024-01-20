@@ -10,6 +10,7 @@ function init(ts, r2mkaText) {
   require('./tscp').init();
   require('./tscd').init();
   require('./bignum').init();
+  require('./meta').init();
   logger.debug(`globalVarible完成初始化！用时：${new Date().getTime() - startTime}ms`);
 }
 
