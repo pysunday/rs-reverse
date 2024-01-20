@@ -1,5 +1,12 @@
 
 
+## [1.4.0](https://github.com/pysunday/rs-reverse/compare/1.3.0...1.4.0) (2024-01-20)
+
+
+### Features
+
+* 1. 增加电量信息与网络连接信息的处理；2. 增加meta标签的content值的解析与打印；3. uua值从npm包工具随机取 ([69c8db6](https://github.com/pysunday/rs-reverse/commit/69c8db619dd34914c256828585bf326f1c06f523))
+
 ## 1.3.0 (2024-01-06)
 
 
