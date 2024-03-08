@@ -1,5 +1,12 @@
 
 
+## [1.5.0](https://github.com/pysunday/rs-reverse/compare/1.4.0...1.5.0) (2024-03-08)
+
+
+### Features
+
+* 增加html文件与javascript代码文件的保存 ([59b86f0](https://github.com/pysunday/rs-reverse/commit/59b86f0ab99b458638802108b223060135d41140))
+
 ## [1.4.0](https://github.com/pysunday/rs-reverse/compare/1.3.0...1.4.0) (2024-01-20)
 
 
