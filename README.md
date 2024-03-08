@@ -62,10 +62,13 @@ Examples:
 ```bash
  $ npx rs-reverse makecode -u https://wcjs.sbj.cnipa.gov.cn/sgtmi
 
-  输出ts：/path/to/output/makecode_output_ts.json
-  输出动态代码：/path/to/output/makecode_output_code.js
   url方式提取的ts：/path/to/output/makecode_input_ts.json
   url方式提取的静态文本：/path/to/output/makecode_input_immucfg.json
+  url方式提取的javascript代码：/path/to/output/makecode_input_js.js
+  url方式提取的html代码：/path/to/output/makecode_input_html.html
+
+  程序生成的ts：/path/to/output/makecode_output_ts.json
+  程序生成的动态代码：/path/to/output/makecode_output_code.js
 
 ```
 

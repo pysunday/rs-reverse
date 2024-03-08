@@ -57,21 +57,21 @@ module.exports = class {
   run() {
     const { getTaskNumber: gtn } = this;
     const cookieBaseArr = numarrJoin(
-      gv.cp2[58],
+      gv.cp2[58], // 3
       this.getSubOne(),
-      gv.cp2[0],
+      gv.cp2[0], // 10
       this.getSubTwo(),
-      gv.cp2[23],
+      gv.cp2[23], // 7
       this.getSubThree(),
-      gtn('0>one>63-287', 4),
-      [gtn('0>one>63>one>4-290', 1)],
-      gv.cp2[55],
+      gtn('0>one>63-287', 4), // 0
+      [gtn('0>one>63>one>4-290', 1)], // 0
+      gv.cp2[55], // 6
       this.getSubFour(),
-      gv.cp2[56],
+      gv.cp2[56], // 2
       this.getSubFive(),
-      gv.cp2[6],
+      gv.cp2[6], // 9
       this.getSubSix(),
-      gv.cp2[39],
+      gv.cp2[39], // 13
       [gtn('0>one>55>one>3-189', 6)],
     )
     return '0' + numarr2string(

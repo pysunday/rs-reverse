@@ -43,7 +43,7 @@ const getCode = async (url) => {
   if (!remotes.length) throw new Error('未找到js外链，无法提取配置文本请检查!');
   for(let src of remotes) {
     const jscode = await request(urlresolve(url, src));
-    if (jscode.includes('r2mKa')) return { $_ts, jscode };
+    if (jscode.includes('r2mKa')) return { $_ts, jscode, html: res };
   }
   throw new Error('js外链中没有瑞数的代码文件');
 }
@@ -83,7 +83,7 @@ const commandHandler = (command, argv) => {
   logger.trace(`传入的$_ts.nsd: ${ts.nsd}`);
   logger.trace(`传入的$_ts.cd: ${ts.cd}`);
   if (argv.url) {
-    command(ts, adapt(argv.url.jscode, argv.adapt));
+    command(ts, adapt(argv.url.jscode, argv.adapt), argv.url);
   } else {
     command(ts);
   }

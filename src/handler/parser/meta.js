@@ -4,7 +4,7 @@ const logger = require('@utils/logger');
 const { extrace, bitwiseTwoNumarr, decrypt, decode } = require('./common/index');
 
 exports.init = function() {
-  const content = gv._getAttr('_ts').metaContent;
+  const content = gv._getAttr('_ts')?.metaContent;
   if (!content) return;
   const arr = extrace(bitwiseTwoNumarr(decrypt(content), gv.keys[17])).filter(it => it.length);
   if (!arr.length) {
