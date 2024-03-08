@@ -23,13 +23,13 @@ module.exports = function (ts, immucfg, mate = {}) {
     mate.jscode ? {
       name: 'makecode_input_js',
       desc: 'url方式提取的javascript代码：',
-      text: JSON.stringify(mate.jscode),
+      text: mate.jscode,
       extend: 'js',
     } : null,
     mate.html ? {
       name: 'makecode_input_html',
       desc: 'url方式提取的html代码：',
-      text: JSON.stringify(mate.html),
+      text: mate.html,
       extend: 'html',
       newLine: true,
     } : null,
