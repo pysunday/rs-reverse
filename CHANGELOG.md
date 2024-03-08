@@ -1,5 +1,12 @@
 
 
+## [1.5.1](https://github.com/pysunday/rs-reverse/compare/1.5.0...1.5.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* 生成html与js代码文件去除stringify ([f4ea982](https://github.com/pysunday/rs-reverse/commit/f4ea982fb270fd62f59e96af7698675eb48142a8))
+
 ## [1.5.0](https://github.com/pysunday/rs-reverse/compare/1.4.0...1.5.0) (2024-03-08)
 
 
