@@ -1,4 +1,5 @@
 const fs = require('fs');
+const logger = require('@utils/logger');
 const unescape = require('@utils/unescape');
 
 const adapts = fs.readdirSync(__dirname, { withFileTypes: true })
@@ -26,10 +27,10 @@ function findFullString(text, start, end) {
 }
 
 module.exports = function(code, name) {
-  const config = adapts[name] ? adapts[name] : adapts.cnipa;
-  const idx = code.indexOf(config.cp2);
+  const config = adapts[name] ? adapts[name] : adapts.common;
   return Object.entries(config).reduce((ans, [key, val]) => {
     const idx = code.indexOf(val);
+    if (idx === -1) throw new Error(`${key}值数据未找到，请查看文档：src/adapt/readme.md`);
     if (code.indexOf(val, idx + val.length) > -1) throw new Error(`${key}对应的值${val}在代码中非唯一，请检查！`);
     const fullString = findFullString(code, idx, idx + val.length);
     return { ...ans, [key]: fullString };
