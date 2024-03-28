@@ -25,6 +25,7 @@ const {
   numarr2string,
   numarrEncrypt,
   xor,
+  runTask,
 } = parser;
 
 module.exports = class {
@@ -48,6 +49,10 @@ module.exports = class {
         rtt: 0, // 往返延时
         saveData: false, // 节流模式
       },
+      'window.innerHeight': 938,
+      'window.innerWidth': 1680,
+      'window.outerHeight': 1025,
+      'window.outerWidth': 1680,
     }
     this.runTime = Math.floor(new Date().getTime() / 1000); // 运行时间
     this.startTime = this.runTime - 1; // 模拟浏览器启动时间
@@ -55,25 +60,6 @@ module.exports = class {
   }
 
   run() {
-    const { getTaskNumber: gtn } = this;
-    const cookieBaseArr = numarrJoin(
-      gv.cp2[58], // 3
-      this.getSubOne(),
-      gv.cp2[0], // 10
-      this.getSubTwo(),
-      gv.cp2[23], // 7
-      this.getSubThree(),
-      gtn('0>one>63-287', 4), // 0
-      [gtn('0>one>63>one>4-290', 1)], // 0
-      gv.cp2[55], // 6
-      this.getSubFour(),
-      gv.cp2[56], // 2
-      this.getSubFive(),
-      gv.cp2[6], // 9
-      this.getSubSix(),
-      gv.cp2[39], // 13
-      [gtn('0>one>55>one>3-189', 6)],
-    )
     return '0' + numarr2string(
       encryptMode1([
         ...numToNumarr4(this.r2mkaTime),
@@ -84,102 +70,170 @@ module.exports = class {
               numToNumarr4([this.r2mkaTime, this.startTime]),
               string2ascii(gv.cp0[399])
             ),
-            gv.keys[gv.cp2[56]]
+            gv.keys[2]
           ),
           encryptMode1(
             xor(
-              numarrEncrypt(cookieBaseArr),
-              gv.keys[gv.cp2[56]],
-              gv.cp2[2]
+              numarrEncrypt(this[`getBasearr_v${gv.version}`]()),
+              gv.keys[2],
+              16
             ),
-            numarrAddTime(gv.keys[gv.cp2[24]], this.runTime)[0],
+            numarrAddTime(gv.keys[17], this.runTime)[0],
             0
           )
         )],
-        numarrAddTime(gv.keys[gv.cp2[2]], this.runTime)[0]
+        numarrAddTime(gv.keys[16], this.runTime)[0]
       )
     );
   }
 
-  getSubOne() {
-    const { getTaskNumber: gtn } = this;
-    const pfarr = string2ascii(this.config['window.navigator.platform']);
-    return [
-      gtn('0>one>62>one>30-272', 550),
-      this.config['window.navigator.maxTouchPoints'],
-      this.config['window.eval.toString().length'],
-      gtn('0>one>62>one>28-270', 1) | (gtn('0>one>62>one>28-270', 92) << gv.cp2[23]),
-      ...numToNumarr4(uuid(this.config['window.navigator.userAgent'])),
-      pfarr.length,
-      ...pfarr,
-      ...numToNumarr4(_random(500, 1000)),
-      ...execRandomByNumber(),
-      gtn('0>one>62>one>12-246', 28),
-      gtn('0>one>62-235', 36),
-      ...numToNumarr4(Number(hexnum(gv.cp0_96(6, 76))))
-    ]
-  }
-
-  getSubTwo() {
-    const flag = +ascii2string(gv.keys[24]);
-    return [
-      flag > 0 && flag < gv.cp2[52] ? 1 : 0,
-      gv.cp2[39],
-      ...numToNumarr4(this.r2mkaTime + this.runTime - this.startTime), // ramka串返回的时间 + 当前时间 - 启动时间
-      ...numToNumarr4(+ascii2string(gv.keys[gv.cp2[15]])),
-      ...numToNumarr8(Math.floor(Math.random() * gv.cp2[207]) * gv.cp2[16] + (((this.runTime * 1000) & gv.cp2[17]) >>> 0)),
-      flag,
-    ]
-  }
-
-  getSubThree() {
-    const { getTaskNumber: gtn } = this;
-    return [
-      ...numToNumarr4(Number(hexnum(gv.cp0_96(6, 76)))),
-      ...numToNumarr4(gtn('0-0', 92)),
-      ...numToNumarr2(getFixedNumber()),
-      ...numToNumarr2(46228), // 根据方法的toString()计算
-    ];
-  }
-
-  getSubFour() {
-    const keyarr = numarrAddTime(gv.keys[gv.cp2[2]])[0];
+  getBasearr_v2() {
+    // 第2版计算cookie方法
     const name = this.config['window.name'].split('&').reduce((ans, it) => {
       const [key, val] = it.split('=');
       return { ...ans, [key]: val };
     }, {});
-    return [
-      1, 0, 0, 0, 0, 0,
-      ...encryptMode2(decrypt(name.$_YWTU || ''), keyarr),
-      ...numToNumarr2(+decode(decrypt(name.$_YVTX || ''))),
-    ];
+    return numarrJoin(
+      3,
+      numarrJoin(
+        1,
+        this.config['window.navigator.maxTouchPoints'],
+        this.config['window.eval.toString().length'],
+        128,
+        ...numToNumarr4(uuid(this.config['window.navigator.userAgent'])),
+        string2ascii(this.config['window.navigator.platform']),
+        ...numToNumarr4(_random(500, 1000)),
+        ...execRandomByNumber(),
+        0,
+        0,
+        ...numToNumarr4(Number(hexnum('3136373737323136'))),
+        ...numToNumarr4(0),
+        ...numToNumarr2(this.config['window.innerHeight']),
+        ...numToNumarr2(this.config['window.innerWidth']),
+        ...numToNumarr2(this.config['window.outerHeight']),
+        ...numToNumarr2(this.config['window.outerWidth']),
+      ),
+      10, // 下标43
+      [
+        0, // 运行时代码中传入的初始数组长度，由于传入的是空数组，因此为0
+        1, // 任务编号0>one>36>one>2-131的任务列表取得
+        ...numToNumarr4(this.r2mkaTime + this.runTime - this.startTime), // ramka串返回的时间 + 当前时间 - 启动时间
+        ...numToNumarr4(+ascii2string(gv.keys[19])),
+        ...numToNumarr8(Math.floor(Math.random() * 1048575) * 4294967296 + (((this.runTime * 1000) & 4294967295) >>> 0)),
+      ],
+      7, // 下标63
+      [
+        ...numToNumarr4(16777216), // gv.cp2取得
+        ...numToNumarr4(0), // 任务编号0-0的任务列表取得
+        ...numToNumarr2(getFixedNumber()), // 固定值5900
+        ...numToNumarr2(46228), // 根据方法的toString()计算
+      ],
+      0, // 任务编号0>one>63-287的任务列表取得
+      [0], // 任务编号0>one>63>one>4-290的任务列表取得
+      6, // 下标80
+      [ // 编号510方法执行返回
+        1,
+        ...numToNumarr2(0),
+        ...numToNumarr2(0),
+        0,
+        ...encryptMode2(decrypt(name.$_YWTU || ''), numarrAddTime(gv.keys[16])[0]),
+        ...numToNumarr2(+decode(decrypt(name.$_YVTX || ''))),
+      ],
+      2, // 下标98
+      [
+        factorial(5) - factorial(3) * 2 + 100, // 100是cp2里取出来的，可能随版本变动
+        203, // cp2[76]，检测window.HTMLFormElement是否存在
+        102, // cp2[120]，检测document.createElement('from')
+        103, // 检测window.top值是否为null
+      ],
+      9, // 下标104
+      [
+        0 | 8, // 8为cp2中的值
+        ['bluetooth', 'cellular', 'ethernet', 'wifi', 'wimax'].indexOf(this.config['window.navigator.connection'].type) + 1,
+      ], 
+      13,
+      [0],
+    )
   }
 
-  getSubFive() {
-    return [
-      factorial(gv.cp2[29]) - factorial(gv.cp2[58]) * gv.cp2[56],
-      fibonacci(gv.cp2[57]) + gv.cp2[43],
-      factorial(gv.cp2[55]) / gv.cp2[19],
-      gv.cp2[57],
-    ]
-  }
-
-  getSubSix() {
-    // 网络与电量信息
-    const { connType } = this.config['window.navigator.connection'];
-    const { charging, chargingTime, level } = this.config['window.navigator.battery']
-    const connTypeIdx = ['bluetooth', 'cellular', 'ethernet', 'wifi', 'wimax'].indexOf(connType) + 1;
-    let oper = 0;
-    if (level) oper |= gv.cp2[56];
-    if (charging) oper |= 1;
-    if (connTypeIdx !== undefined) oper |= gv.cp2[52]
-    return [
-      oper,
-      level * 100,
-      chargingTime >> gv.cp2[52],
-      chargingTime & gv.cp2[34],
-      connTypeIdx,
-    ]
+  getBasearr_v1() {
+    // 第1版计算cookie方法
+    const { getTaskNumber: gtn } = this;
+    return numarrJoin(
+      3,
+      numarrJoin(
+        gtn('0>one>62>one>30-272', 550),
+        this.config['window.navigator.maxTouchPoints'],
+        this.config['window.eval.toString().length'],
+        gtn('0>one>62>one>28-270', 1) | (gtn('0>one>62>one>28-270', 92) << 7),
+        ...numToNumarr4(uuid(this.config['window.navigator.userAgent'])),
+        string2ascii(this.config['window.navigator.platform']),
+        ...numToNumarr4(_random(500, 1000)),
+        ...execRandomByNumber(),
+        gtn('0>one>62>one>12-246', 28),
+        gtn('0>one>62-235', 36),
+        ...numToNumarr4(Number(hexnum(gv.cp0_96(6, 76))))
+      ),
+      10,
+      (() => {
+        const flag = +ascii2string(gv.keys[24]);
+        return [
+          flag > 0 && flag < 8 ? 1 : 0,
+          13,
+          ...numToNumarr4(this.r2mkaTime + this.runTime - this.startTime), // ramka串返回的时间 + 当前时间 - 启动时间
+          ...numToNumarr4(+ascii2string(gv.keys[19])),
+          ...numToNumarr8(Math.floor(Math.random() * 1048575) * 4294967296 + (((this.runTime * 1000) & 4294967295) >>> 0)),
+          flag,
+        ];
+      })(),
+      7,
+      [
+        ...numToNumarr4(Number(hexnum(gv.cp0_96(6, 76)))),
+        ...numToNumarr4(gtn('0-0', 92)),
+        ...numToNumarr2(getFixedNumber()),
+        ...numToNumarr2(46228), // 根据方法的toString()计算
+      ],
+      0,
+      [0],
+      6,
+      (() => {
+        const name = this.config['window.name'].split('&').reduce((ans, it) => {
+          const [key, val] = it.split('=');
+          return { ...ans, [key]: val };
+        }, {});
+        return [
+          1, 0, 0, 0, 0, 0,
+          ...encryptMode2(decrypt(name.$_YWTU || ''), numarrAddTime(gv.keys[16])[0]),
+          ...numToNumarr2(+decode(decrypt(name.$_YVTX || ''))),
+        ];
+      })(),
+      2,
+      [
+        factorial(5) - factorial(3) * 2,
+        fibonacci(11) + 37,
+        factorial(6) / 4,
+        11,
+      ],
+      9,
+      (() => {
+        const { connType } = this.config['window.navigator.connection'];
+        const { charging, chargingTime, level } = this.config['window.navigator.battery']
+        const connTypeIdx = ['bluetooth', 'cellular', 'ethernet', 'wifi', 'wimax'].indexOf(connType) + 1;
+        let oper = 0;
+        if (level) oper |= 2;
+        if (charging) oper |= 1;
+        if (connTypeIdx !== undefined) oper |= 8
+        return [
+          oper,
+          level * 100,
+          chargingTime >> 8,
+          chargingTime & 255,
+          connTypeIdx,
+        ]
+      })(),
+      13,
+      [0],
+    );
   }
 
   getTaskNumber(name, idx) {

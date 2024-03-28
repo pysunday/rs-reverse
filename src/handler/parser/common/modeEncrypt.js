@@ -9,48 +9,48 @@ function encode(cfg, val, idx, cfgnum) {
   const list = cfg[idx];
   const arr = [0, 0, 0, 0];
   let one = val[0] ^ list[0]
-    , two = val[idx ? gv.cp2[58] : 1] ^ list[1]
+    , two = val[idx ? 3 : 1] ^ list[1]
     , three = val[2] ^ list[2]
-    , four = val[idx ? 1 : gv.cp2[58]] ^ list[3]
-    , cursor = gv.cp2[19];
-  for (let i = 0; i < list.length / gv.cp2[19] - gv.cp2[56]; i++) {
-    const none = cfgnum[0][one >>> gv.cp2[4]] ^ cfgnum[1][two >> gv.cp2[2] & gv.cp2[34]] ^ cfgnum[2][three >> gv.cp2[52] & gv.cp2[34]] ^ cfgnum[3][four & gv.cp2[34]] ^ list[cursor];
-    const ntwo = cfgnum[0][two >>> gv.cp2[4]] ^ cfgnum[1][three >> gv.cp2[2] & gv.cp2[34]] ^ cfgnum[2][four >> gv.cp2[52] & gv.cp2[34]] ^ cfgnum[3][one & gv.cp2[34]] ^ list[cursor + 1];
-    const nthree = cfgnum[0][three >>> gv.cp2[4]] ^ cfgnum[1][four >> gv.cp2[2] & gv.cp2[34]] ^ cfgnum[2][one >> gv.cp2[52] & gv.cp2[34]] ^ cfgnum[3][two & gv.cp2[34]] ^ list[cursor + gv.cp2[56]];
-    four = cfgnum[0][four >>> gv.cp2[4]] ^ cfgnum[1][one >> gv.cp2[2] & gv.cp2[34]] ^ cfgnum[2][two >> gv.cp2[52] & gv.cp2[34]] ^ cfgnum[3][three & gv.cp2[34]] ^ list[cursor + gv.cp2[58]];
-    cursor += gv.cp2[19];
+    , four = val[idx ? 1 : 3] ^ list[3]
+    , cursor = 4;
+  for (let i = 0; i < list.length / 4 - 2; i++) {
+    const none = cfgnum[0][one >>> 24] ^ cfgnum[1][two >> 16 & 255] ^ cfgnum[2][three >> 8 & 255] ^ cfgnum[3][four & 255] ^ list[cursor];
+    const ntwo = cfgnum[0][two >>> 24] ^ cfgnum[1][three >> 16 & 255] ^ cfgnum[2][four >> 8 & 255] ^ cfgnum[3][one & 255] ^ list[cursor + 1];
+    const nthree = cfgnum[0][three >>> 24] ^ cfgnum[1][four >> 16 & 255] ^ cfgnum[2][one >> 8 & 255] ^ cfgnum[3][two & 255] ^ list[cursor + 2];
+    four = cfgnum[0][four >>> 24] ^ cfgnum[1][one >> 16 & 255] ^ cfgnum[2][two >> 8 & 255] ^ cfgnum[3][three & 255] ^ list[cursor + 3];
+    cursor += 4;
     [one, two, three] = [none, ntwo, nthree]
   }
-  for (let i = 0; i < gv.cp2[19]; i++) {
-    arr[idx ? gv.cp2[58] & -i : i] = cfgnum[4][one >>> gv.cp2[4]] << gv.cp2[4] ^ cfgnum[4][two >> gv.cp2[2] & gv.cp2[34]] << gv.cp2[2] ^ cfgnum[4][three >> gv.cp2[52] & gv.cp2[34]] << gv.cp2[52] ^ cfgnum[4][four & gv.cp2[34]] ^ list[cursor++];
+  for (let i = 0; i < 4; i++) {
+    arr[idx ? 3 & -i : i] = cfgnum[4][one >>> 24] << 24 ^ cfgnum[4][two >> 16 & 255] << 16 ^ cfgnum[4][three >> 8 & 255] << 8 ^ cfgnum[4][four & 255] ^ list[cursor++];
     [one, two, three, four] = [two, three, four, one];
   }
   return arr;
 }
 
 function getCfg(numarr) {
-  const ret = combine4(numarr.length % gv.cp2[2] !== 0 ? numarrAddTime.reverse(numarr)[0] : numarr);
+  const ret = combine4(numarr.length % 16 !== 0 ? numarrAddTime.reverse(numarr)[0] : numarr);
   const cfgnum_0_4 = gv.cfgnum[0][4];
   const len = ret.length;
   const arr = [];
   let i, j, temp;
-  for (i = len, j = 1; i < gv.cp2[19] * len + gv.cp2[68]; i++) {
+  for (i = len, j = 1; i < 4 * len + 28; i++) {
     temp = ret[i - 1];
-    if (i % len === 0 || len === gv.cp2[52] && i % len === gv.cp2[19]) {
-      temp = cfgnum_0_4[temp >>> gv.cp2[4]] << gv.cp2[4] ^ cfgnum_0_4[temp >> gv.cp2[2] & gv.cp2[34]] << gv.cp2[2] ^ cfgnum_0_4[temp >> gv.cp2[52] & gv.cp2[34]] << gv.cp2[52] ^ cfgnum_0_4[temp & gv.cp2[34]];
+    if (i % len === 0 || len === 8 && i % len === 4) {
+      temp = cfgnum_0_4[temp >>> 24] << 24 ^ cfgnum_0_4[temp >> 16 & 255] << 16 ^ cfgnum_0_4[temp >> 8 & 255] << 8 ^ cfgnum_0_4[temp & 255];
       if (i % len === 0) {
-        temp = temp << gv.cp2[52] ^ temp >>> gv.cp2[4] ^ j << gv.cp2[4];
-        j = j << 1 ^ (j >> gv.cp2[23]) * gv.cp2[93];
+        temp = temp << 8 ^ temp >>> 24 ^ j << 24;
+        j = j << 1 ^ (j >> 7) * 283;
       }
     }
     ret[i] = ret[i - len] ^ temp;
   }
   for (j = 0; i; j++, i--) {
-    temp = ret[j & gv.cp2[58] ? i : i - gv.cp2[19]];
-    if (i <= gv.cp2[19] || j < gv.cp2[19]) {
+    temp = ret[j & 3 ? i : i - 4];
+    if (i <= 4 || j < 4) {
       arr[j] = temp;
     } else {
-      arr[j] = gv.cfgnum[1][0][cfgnum_0_4[temp >>> gv.cp2[4]]] ^ gv.cfgnum[1][1][cfgnum_0_4[temp >> gv.cp2[2] & gv.cp2[34]]] ^ gv.cfgnum[1][2][cfgnum_0_4[temp >> gv.cp2[52] & gv.cp2[34]]] ^ gv.cfgnum[1][3][cfgnum_0_4[temp & gv.cp2[34]]];
+      arr[j] = gv.cfgnum[1][0][cfgnum_0_4[temp >>> 24]] ^ gv.cfgnum[1][1][cfgnum_0_4[temp >> 16 & 255]] ^ gv.cfgnum[1][2][cfgnum_0_4[temp >> 8 & 255]] ^ gv.cfgnum[1][3][cfgnum_0_4[temp & 255]];
     }
   }
   return [ret, arr];
@@ -59,15 +59,15 @@ function getCfg(numarr) {
 function encryptMode1(valarr, keyarr, flag = 1) {
   const cfg = getCfg(keyarr);
   var _$iv, _$j7, _$kb, _$ka, _$dV, _$du, _$jb;
-  const max = Math.floor(valarr.length / gv.cp2[2]) + 1;
+  const max = Math.floor(valarr.length / 16) + 1;
   let ans = [], arr;
-  const fill = gv.cp2[2] - valarr.length % gv.cp2[2];
+  const fill = 16 - valarr.length % 16;
   if (flag) {
-    ans = arr = new Array(4).fill(gv.cp2[17]).map(it => Math.floor(Math.random() * it));
+    ans = arr = new Array(4).fill(4294967295).map(it => Math.floor(Math.random() * it));
   }
   const copyarr = numToNumarr4.reverse_sign([...valarr, ...new Array(fill).fill(fill)]);
   for (let i = 0; i < max; ) {
-    let current = copyarr.slice(i << gv.cp2[56], ++i << gv.cp2[56]);
+    let current = copyarr.slice(i << 2, ++i << 2);
     if (arr) {
       current = [0, 1, 2, 3].map(it => current[it] ^ arr[it]);
     }
@@ -85,11 +85,11 @@ function encryptMode2(valarr, keyarr, flag = 1) {
   let arrcom = combine4(valarr);
   let arrsub = [];
   if (flag) {
-    arrsub = arrcom.slice(0, gv.cp2[19]);
-    arrcom = arrcom.slice(gv.cp2[19]);
+    arrsub = arrcom.slice(0, 4);
+    arrcom = arrcom.slice(4);
   }
-  for (let i = 0; i < arrcom.length / gv.cp2[19]; ) {
-    const next = arrcom.slice(i << gv.cp2[56], ++i << gv.cp2[56]);
+  for (let i = 0; i < arrcom.length / 4; ) {
+    const next = arrcom.slice(i << 2, ++i << 2);
     let val = encode(cfg, next, 1, gv.cfgnum[1]);
     if (arrsub.length) {
       val = _zip(val, arrsub).map(([a, b]) => a ^ b);

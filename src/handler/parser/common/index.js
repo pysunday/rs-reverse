@@ -22,5 +22,7 @@ module.exports = {
   numarr2string: require('./numarr2string'),
   numarrJoin: require('./numarrJoin'),
   dynamicExec: require('./dynamicExec'),
+  numarrAlterByNumber: require('./numarrAlterByNumber'),
+  runTask: require('./runTask'),
 }
 

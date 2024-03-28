@@ -6,26 +6,26 @@ module.exports = function(numarr, keys) {
   if (typeof numarr === 'string') {
     numarr = string2ascii(numarr);
   }
-  keys = keys || gv.cp0_96(7, 41).split('');
+  keys = keys || gv.basestr.split('');
   let idx = 0;
   const ans = [];
-  while (idx < numarr.length - gv.cp2[56]) {
+  while (idx < numarr.length - 2) {
     const [one, two, three] = [numarr[idx], numarr[idx + 1], numarr[idx + 2]];
     idx += 3;
     ans.push(
-      keys[one >> gv.cp2[56]],
-      keys[(one & gv.cp2[58]) << gv.cp2[19] | two >> gv.cp2[19]],
-      keys[(two & gv.cp2[31]) << gv.cp2[56] | three >> gv.cp2[55]],
-      keys[three & gv.cp2[13]],
+      keys[one >> 2],
+      keys[(one & 3) << 4 | two >> 4],
+      keys[(two & 15) << 2 | three >> 6],
+      keys[three & 63],
     );
   }
   if (idx < numarr.length) {
     ans.push(
-      keys[numarr[idx] >> gv.cp2[56]],
-      keys[(numarr[idx + 1] & gv.cp2[58]) << gv.cp2[19] | numarr[idx + 1] >> gv.cp2[19]],
+      keys[numarr[idx] >> 2],
+      keys[(numarr[idx + 1] & 3) << 4 | numarr[idx + 1] >> 4],
     )
     if (numarr[idx + 1] !== undefined) {
-      ans.push(keys[(numarr[idx + 1] & gv.cp2[31]) << gv.cp2[56]])
+      ans.push(keys[(numarr[idx + 1] & 15) << 2])
     }
   }
   return ans.join('');

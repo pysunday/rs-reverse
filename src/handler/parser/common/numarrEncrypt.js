@@ -2,17 +2,17 @@ const gv = require('@src/handler/globalVarible');
 
 function getTree() {
   let arr = [];
-  for (let i = 1; i < gv.cp2[34]; i++) {
+  for (let i = 1; i < 255; i++) {
     arr.push({
       total: 1,
       idx: i
     });
   }
   arr.push({
-    total: gv.cp2[55],
-    idx: gv.cp2[34]
+    total: 6,
+    idx: 255
   }, {
-    total: gv.cp2[49],
+    total: 45,
     idx: 0
   }
   );
@@ -26,8 +26,8 @@ function getTree() {
     arr.push(item);
   }
   while (arr.length > 1) {
-    const [one, two] = arr.slice(0, gv.cp2[56]);
-    arr = arr.slice(gv.cp2[56]);
+    const [one, two] = arr.slice(0, 2);
+    arr = arr.slice(2);
     parse({
       total: one.total + two.total,
       first: one,
@@ -39,8 +39,8 @@ function getTree() {
 
 function getKey(arr) {
   for (let idx in arr) {
-    if (arr[idx].val >= gv.cp2[52]) {
-      return arr[idx].key >> arr[idx].val - gv.cp2[52];
+    if (arr[idx].val >= 8) {
+      return arr[idx].key >> arr[idx].val - 8;
     }
   }
 }
@@ -74,14 +74,14 @@ module.exports = function (numarr) {
     const cfg = encryptConfig[0][numarr[i]];
     one = one << cfg.val | cfg.key;
     two += cfg.val;
-    while (two >= gv.cp2[52]) {
-      ans.push(one >> two - gv.cp2[52]);
-      one &= ~(gv.cp2[34] << two - gv.cp2[52]);
-      two -= gv.cp2[52];
+    while (two >= 8) {
+      ans.push(one >> two - 8);
+      one &= ~(255 << two - 8);
+      two -= 8;
     }
   }
   if (two > 0) {
-    ans.push(one << gv.cp2[52] - two | encryptConfig[1] >> two);
+    ans.push(one << 8 - two | encryptConfig[1] >> two);
   }
   return ans;
 }

@@ -1,10 +1,23 @@
 const _merge = require('lodash/merge');
 const _chunk = require('lodash/chunk');
 const _get = require('lodash/get');
+const _set = require('lodash/set');
+const config = require('@src/config/');
 
 const cache = {};
 
 class GlobalVarible {
+  get config() {
+    // 不同版本的可变配置
+    if (!cache.config) {
+      cache.config = config(cache.version);
+    }
+    return cache.config
+  }
+  get version() {
+    // 代码版本
+    return cache.version || this.config.version;
+  }
   get metaContent() {
     return cache.metaContent;
   }
@@ -13,6 +26,12 @@ class GlobalVarible {
   }
   get cfgnum() {
     return cache.cfgnum;
+  }
+  get decryptKeys() {
+    return cache.decryptKeys;
+  }
+  get basestr() {
+    return 'qrcklmDoExthWJiHAp1sVYKU3RFMQw8IGfPO92bvLNj.7zXBaSnu0TC6gy_4Ze5d{}|~ !#$%()*+,-;=?@[]^';
   }
   get utils() {
     return cache.utils;
@@ -51,7 +70,7 @@ class GlobalVarible {
     return cache[attr];
   }
   _setAttr(attr, value) {
-    cache[attr] = value;
+    _set(cache, attr, value);
     if (attr === 'cp0') {
       cache.cp0_96 = _chunk(value, 96);
     }

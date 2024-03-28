@@ -2,13 +2,14 @@ const getScd = require('./getScd');
 const globaltext = require('./globaltext');
 const dataOper = require('./dataOper');
 const arraySwap = require('./arraySwap');
-const immutext = require('@src/immutext/');
 const initTs = require('./initTs');
+const findFullString = require('@/utils/findFullString');
+const gv = require('@src/handler/globalVarible');
 
 module.exports = class {
   constructor(ts, immucfg) {
     this.startTime = new Date().getTime();
-    this.$_ts = initTs(ts, immucfg);
+    this.$_ts = initTs(ts, immucfg || gv.config.immucfg);
     this.scd = getScd(this.$_ts.nsd);
     this.keynames = this.$_ts.cp[1];
     this.keycodes = []
@@ -16,14 +17,19 @@ module.exports = class {
     this.opmate = this.mateOper();
     this.opdata = dataOper();
     this.r2mkaText = null;
-    this.immucfg = immucfg || immutext;
+    this.immucfg = immucfg || gv.config.immucfg;
   }
 
   run() {
     const codeArr = this.parseGlobalText1();
     codeArr.push(this.parseGlobalText2());
     codeArr.push("})(", '$_ts', ".scj,", '$_ts', ".aebi);");
-    const codeStr = codeArr.join('')
+    const codeStr = codeArr.join('');
+    if (!this.immucfg.globalText3) {
+      const subStr = `r2mKa${codeStr.includes('r2mKa0') ? '0' : '1'}`;
+      this.immucfg.globalText3 = findFullString(codeStr, subStr);
+      gv._setAttr('config.immucfg', this.immucfg);
+    }
     this.parseTs(codeStr);
     this.endTime = new Date().getTime();
     return {

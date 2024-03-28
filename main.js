@@ -5,16 +5,14 @@ require('module-alias')(path.dirname(paths.package));
 const yargs = require('yargs');
 const fs = require('fs');
 const makeCode = require('@src/makeCode');
+const makeCodeHigh = require('@src/makeCodeHigh');
 const makeCookie = require('@src/makeCookie');
 const utils = require('@utils/');
-const { logger, isValidUrl } = utils;
+const { logger, getCode } = utils;
 const pkg = require(paths.package);
-const request = require('request-promise');
-const cheerio = require('cheerio');
 const log4js = require('log4js');
-const urlresolve = require('url').resolve;
 const adapt = require('@src/adapt');
-const _get = require('lodash/get');
+const gv = require('@src/handler/globalVarible');
 
 function debugLog(level) {
   if (level) {
@@ -29,32 +27,16 @@ function debugLog(level) {
   logger.trace('paths:\n', JSON.stringify(paths, null, 2));
 }
 
-const getCode = async (url) => {
-  if (!isValidUrl(url)) throw new Error('输入链接不正确');
-  const res = await request(url)
-  const $ = cheerio.load(res);
-  const scripts = [...$('script[r=m]')]
-  const tsscript = scripts.map(ele => $(ele).text()).filter(text => text.includes('$_ts.nsd') && text.includes('$_ts.cd'));
-  if (!tsscript.length) throw new Error('链接返回结果未找到cd或nsd');
-  const $_ts = Function('window', tsscript[0] + 'return $_ts')({});
-  $_ts.metaContent = _get($('meta[r=m]'), '0.attribs.content');
-  const checkSrc = (src) => src?.split('.').pop() === 'js' ? src : undefined;
-  const remotes = scripts.map(it => checkSrc(it.attribs.src)).filter(Boolean);
-  if (!remotes.length) throw new Error('未找到js外链，无法提取配置文本请检查!');
-  for(let src of remotes) {
-    const jscode = await request(urlresolve(url, src));
-    if (jscode.includes('r2mKa')) return { $_ts, jscode, html: res };
-  }
-  throw new Error('js外链中没有瑞数的代码文件');
-}
-
 const commandBuilder = {
   f: {
     alias: 'file',
     describe: '含有nsd, cd值的json文件',
     type: 'string',
     coerce: (input) => {
-      if (['1', '2'].includes(input)) input = paths.exampleResolve('codes', `${input}-\$_ts.json`);
+      if (['1', '2'].includes(input)) {
+        gv._setAttr('version', Number(input));
+        input = paths.exampleResolve('codes', `${input}-\$_ts.json`);
+      }
       if (!fs.existsSync(input)) throw new Error(`输入文件不存在: ${input}`);
       return JSON.parse(fs.readFileSync(paths.resolve(input), 'utf8'));
     }
@@ -79,13 +61,17 @@ const commandBuilder = {
 
 const commandHandler = (command, argv) => {
   debugLog(argv.level);
-  const ts = argv.url?.$_ts || argv.file || require(paths.exampleResolve('codes', '1-\$_ts.json'));
+  const ts = argv.url?.$_ts || argv.file || require(paths.exampleResolve('codes', `${gv.version}-\$_ts.json`));
   logger.trace(`传入的$_ts.nsd: ${ts.nsd}`);
   logger.trace(`传入的$_ts.cd: ${ts.cd}`);
-  if (argv.url) {
-    command(ts, adapt(argv.url.jscode, argv.adapt), argv.url);
-  } else {
-    command(ts);
+  try {
+    if (argv.url) {
+      command(ts, adapt(argv.url, argv.adapt), argv.url);
+    } else {
+      command(ts);
+    }
+  } catch (err) {
+    logger.error(err.stack);
   }
 }
 
@@ -99,6 +85,12 @@ module.exports = yargs
     describe: '生成动态代码',
     builder: commandBuilder,
     handler: commandHandler.bind(null, makeCode),
+  })
+  .command({
+    command: 'makecode-high',
+    describe: '生成动态代码-高级',
+    builder: commandBuilder,
+    handler: commandHandler.bind(null, makeCodeHigh),
   })
   .command({
     command: 'makecookie',
@@ -126,7 +118,10 @@ module.exports = yargs
         describe: '拥有完整$_ts的json文件',
         type: 'string',
         coerce: (input) => {
-          if (['1', '2'].includes(input)) return paths.exampleResolve('codes', `${input}-\$_ts-full.json`);
+          if (['1', '2'].includes(input)) {
+            gv._setAttr('version', Number(input));
+            return paths.exampleResolve('codes', `${input}-\$_ts-full.json`);
+          }
           return input;
         }
       },

@@ -4,11 +4,11 @@ const gv = require('@src/handler/globalVarible');
 module.exports = function (num) {
   if (typeof num !== 'number' || num < 0) {
     num = 0;
-  } else if (num > gv.cp2[25]) {
-    num = gv.cp2[25];
+  } else if (num > 65535) {
+    num = 65535;
   }
   return [
-    num >> gv.cp2[52],
-    num & gv.cp2[34]
+    num >> 8,
+    num & 255
   ]
 }
