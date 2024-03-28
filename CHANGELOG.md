@@ -1,5 +1,17 @@
 
 
+## [1.6.0](https://github.com/pysunday/rs-reverse/compare/1.5.1...1.6.0) (2024-03-28)
+
+
+### Features
+
+* 增加多版本控制、增加其它瑞数网站适配、动态执行逻辑重构 ([8771a69](https://github.com/pysunday/rs-reverse/commit/8771a698361c80ab94af0057e743d4312b3a5be4))
+
+
+### Bug Fixes
+
+* 适配更新 ([d048898](https://github.com/pysunday/rs-reverse/commit/d0488986a1c952c2f0f47d1afbc2089386ba31a0))
+
 ## [1.5.1](https://github.com/pysunday/rs-reverse/compare/1.5.0...1.5.1) (2024-03-08)
 
 
