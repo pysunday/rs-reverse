@@ -11,10 +11,10 @@ module.exports = function (num) {
   }
   if (typeof num !== 'number') num = 0;
   return [
-    num >> gv.cp2[4] & gv.cp2[34],
-    num >> gv.cp2[2] & gv.cp2[34],
-    num >> gv.cp2[52] & gv.cp2[34],
-    num & gv.cp2[34]
+    num >> 24 & 255,
+    num >> 16 & 255,
+    num >> 8 & 255,
+    num & 255
   ];
 }
 
@@ -24,7 +24,7 @@ module.exports.reverse = function (numarr) {
     if (numarr.length % 4 !== 0) throw new Error('使用numToNumarr4.reverse方法时传入的数字数组必须是4的倍数');
     return _chunk(numarr, 4).map(it => module.exports.reverse(it));
   }
-  return (numarr[0] << gv.cp2[4] | numarr[1] << gv.cp2[2] | numarr[2] << gv.cp2[52] | numarr[3]) >>> 0;
+  return (numarr[0] << 24 | numarr[1] << 16 | numarr[2] << 8 | numarr[3]) >>> 0;
 }
 
 module.exports.reverse_sign = function (numarr) {
@@ -33,5 +33,5 @@ module.exports.reverse_sign = function (numarr) {
     if (numarr.length % 4 !== 0) throw new Error('使用numToNumarr4.reverse方法时传入的数字数组必须是4的倍数');
     return _chunk(numarr, 4).map(it => module.exports.reverse_sign(it));
   }
-  return (numarr[0] << gv.cp2[4] | numarr[1] << gv.cp2[2] | numarr[2] << gv.cp2[52] | numarr[3]);
+  return (numarr[0] << 24 | numarr[1] << 16 | numarr[2] << 8 | numarr[3]);
 }

@@ -1,5 +1,4 @@
 const gv = require('../globalVarible');
-const gt3 = require('@src/immutext/').globalText3;
 const logger = require('@utils/logger');
 
 function gtHandler(str, curr) {
@@ -57,7 +56,8 @@ const parse = (() => {
   }
 })();
 
-exports.parse = function(str = gt3) {
+exports.parse = function(str) {
+  if (!str) str = gv.config.immucfg.globalText3;
   const r2mka_len = 'r2mka'.length;
   const flag = str.charAt(r2mka_len) === '1';
   const gt = gtHandler(str, r2mka_len + 1);
@@ -86,6 +86,6 @@ exports.parse = function(str = gt3) {
 };
 
 exports.init = function(r2mkaText) {
-  gv._setAttr('r2mka', exports.parse(r2mkaText || gt3));
+  gv._setAttr('r2mka', exports.parse(r2mkaText || gv.config.immucfg.globalText3));
   logger.debug('头r2mka标识字符串完成解析!')
 }

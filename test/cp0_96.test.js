@@ -1,21 +1,5 @@
-const gv = require('../utils/initGv')();
+const gv = require('../utils/initGv')(1);
 const { main, swap4, swap2, hexnum, stringReverse, init } = gv.utils;
-/*
-    setData('G_$cc', cp0[0]);
-    setData('G_$ia', cp0[1]);
-    setData('G_$ga', cp0[2]);
-    setData('G_$_7', cp0[3]);
-    setData('G_$_3', cp0[4]);
-    setData('G_$jY', cp0[5]);
-    setData('G_$ad', cp0[6]);
-    setData('G_$bJ', cp0[7]);
-    setData('G_$eh', cp0[8]);
-    setData('G_$bv', cp0[9]);
-    setData('G_$bO', cp0[10]);
-    setData('G_$_x', cp0[11]);
-    setData('G_$dL', cp0[12]);
-    setData('G_$bn', cp0[13]);
-*/
 
 const valueMap = {
   'visibilityState': main(gv.cp0_96(6, 69)).join(),

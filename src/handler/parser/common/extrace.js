@@ -3,11 +3,11 @@ const gv = require('@src/handler/globalVarible');
 
 function getLens(numarr, idx) {
   const item = numarr[idx];
-  if ((item & gv.cp2[37]) === 0) return item;
-  if ((item & gv.cp2[46]) == gv.cp2[37]) return (item & gv.cp2[13]) << gv.cp2[52] | numarr[idx + 1];
-  if ((item & gv.cp2[36]) == gv.cp2[46]) return (item & gv.cp2[1]) << gv.cp2[2] | numarr[idx + 1] << gv.cp2[52] | numarr[idx + 2];
-  if ((item & gv.cp2[7]) == gv.cp2[36]) return (item & gv.cp2[31]) << gv.cp2[4] | numarr[idx + 1] << gv.cp2[2] | numarr[idx + 2] << gv.cp2[52] | numarr[idx + 3];
-  if ((item & gv.cp2[99]) == gv.cp2[7]) return (numarr[idx + 1] << gv.cp2[4] | numarr[idx + 2] << gv.cp2[2] | numarr[idx + 3] << gv.cp2[52] | numarr[idx + 4]) >>> 0;
+  if ((item & 128) === 0) return item;
+  if ((item & 192) == 128) return (item & 63) << 8 | numarr[idx + 1];
+  if ((item & 224) == 192) return (item & 31) << 16 | numarr[idx + 1] << 8 | numarr[idx + 2];
+  if ((item & 240) == 224) return (item & 15) << 24 | numarr[idx + 1] << 16 | numarr[idx + 2] << 8 | numarr[idx + 3];
+  if ((item & 248) == 240) return (numarr[idx + 1] << 24 | numarr[idx + 2] << 16 | numarr[idx + 3] << 8 | numarr[idx + 4]) >>> 0;
   return item;
 }
 

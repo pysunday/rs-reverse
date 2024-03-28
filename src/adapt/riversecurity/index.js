@@ -3,4 +3,5 @@ module.exports = {
   cp2: 'g+*`-+`+0`.1`',
   globalText1: "'r2mKa'.length",
   globalText2: 'function ā(ā){',
+  version: 1,
 }

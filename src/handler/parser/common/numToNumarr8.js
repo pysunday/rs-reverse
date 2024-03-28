@@ -3,16 +3,16 @@ const gv = require('@src/handler/globalVarible');
 
 module.exports = function (num) {
   if (typeof num !== 'number' || num < 0) num = 0;
-  const one = num / gv.cp2[16];
-  const two = num % gv.cp2[16];
+  const one = num / 4294967296;
+  const two = num % 4294967296;
   return [
-    one >> gv.cp2[4] & gv.cp2[34],
-    one >> gv.cp2[2] & gv.cp2[34],
-    one >> gv.cp2[52] & gv.cp2[34],
-    one & gv.cp2[34],
-    two >> gv.cp2[4] & gv.cp2[34],
-    two >> gv.cp2[2] & gv.cp2[34],
-    two >> gv.cp2[52] & gv.cp2[34],
-    two & gv.cp2[34],
+    one >> 24 & 255,
+    one >> 16 & 255,
+    one >> 8 & 255,
+    one & 255,
+    two >> 24 & 255,
+    two >> 16 & 255,
+    two >> 8 & 255,
+    two & 255,
   ]
 }

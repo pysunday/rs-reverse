@@ -1,22 +1,20 @@
-**重要提示（240322）：当前版本在网站更新后，-u远程命令运行失败，作者正在更新中！本地运行不受影响，可使用-f加example目录内ts文件继续研究，或使用`-f 1`或`-f 2`运行本地example文件！项目在近期有大版本更新，可关注订阅号`码功`接受更新推送**
-
 该项目为瑞数加密的逆向研究，代码开发基于网站：`https://wcjs.sbj.cnipa.gov.cn/sgtmi`
 
 研究包括动态代码生成原理及动态cookie生成原理。
 
-**点赞是我坚持的动力，希望该研究也能给一样好奇瑞数原理的人答疑解惑。**
+**作者最新开源项目(补环境框架sdenv)推荐：[sdenv](https://github.com/pysunday/sdenv)**
 
 ## 0. 声明
 
 该项目下代码仅用于个人学习、研究或欣赏。通过使用该仓库相关代码产生的风险与仓库代码作者无关！
 
-该项目的研究网站仅做参考，项目不鼓励直接请求该研究网站，算法逆向研究请直接使用`example`目录下的样例文件，如：`node main.js makecookie -f example/codes/1-\$_ts.json`。
+该项目的研究网站仅做参考，项目不鼓励直接请求该研究网站，算法逆向研究请直接使用`example`目录下的样例文件，如：`node main.js makecookie`(默认为最新版本代码)。
 
-该瑞数cookie生成过程中的算法逆向仍存在以下问题：
+该瑞数cookie生成过程中的算法逆向存在以下变量：
 
-1. 预先设置好的配置项，参见：[代码中config的值](https://github.com/pysunday/rs-reverse/blob/main/src/handler/Cookie.js#L32);
-2. 代码中`getSubThree`方法中的[数字46228](https://github.com/pysunday/rs-reverse/blob/main/src/handler/Cookie.js#L115)为作者代码格式化且代码修改后运行代码计算的值;
-3. 代码中`getSubOne`方法中的[`_random(500, 1000)`](https://github.com/pysunday/rs-reverse/blob/main/src/handler/Cookie.js#L89)为作者电脑运行计算的大概值，此值与浏览器运行环境有关(如电脑配置等);
+1. 预先设置好的配置项，参见：`代码中config的值`;
+2. 代码中的数字`46228`为作者代码格式化且代码修改后计算出来的方法字符串摘要值;
+3. 代码中中的`_random(500, 1000)`为作者电脑运行计算的大概值，此值与浏览器运行环境有关(如电脑配置等);
 
 ## 1. 博客文章
 
@@ -150,7 +148,51 @@ Examples:
 
 ```
 
-## 3. 技术交流
+## 3. 其它
+
+### 3.1. 网站兼容与适配
+
+适配文件配置在目录`./src/adapt/`下，已完成兼容配置：
+
+网站 | 名称 | makecode | makecookie | 适配版本 | 是否逆向验证
+---- | ---- | -------- | ---------- | -------- | --------------
+商标网 | cnipa | 👌 | 👌 | - | Y
+瑞数官网 | riversecurity | 👌 | 👌 | 版本1 | N
+
+以瑞数官网实例如：`npx rs-reverse makecookie -u https://www.riversecurity.com/resources.shtml -a riversecurity`
+
+具体配置说明请看文档：`./src/adapt/README.md`
+
+### 3.2. 静态文本
+
+当使用本地方式生成动态代码或者cookie时需要预先配置静态文本，远程方式由于会动态解析，因此远程方式不需要配置，静态文本配置文件：`./src/config/immucfg_v*.json`，里面包含`cp0`、`cp2`、`globalText1`、`globalText2`、`globalText3`等静态文本字段，您可以通过远程命令动态生成，如通过makecode命令加远程网址`-u https://wcjs.sbj.cnipa.gov.cn/sgtmi`，执行后生成文件`./output/makecode_input_immucfg.json`即为静态文本配置文件。
+
+### 3.3. 可变配置项
+
+配置文件地址：`./src/config/index.js`，在网站版本更新后需要修改该文件下配置文件以达到继续适配，配置项说明如下
+
+#### 3.3.1. keynameNum
+
+该配置项用于控制变量名数组生成数量，即`$_ts.cp[1]`的值，具体原理请看前面博客文章，该值会在每次网站更新后发生变动，可以通过查看js文件，搜索`\n\n\n\n`，在搜索结果后面不远处就可以找到，如：
+
+1. 代码`_$hn=_$f2(0,806,_$at(_$_q))`中的`806`
+    ![图片1](./static/keynameNum1.png)
+2. 代码`_$k$=_$cg(0,829,_$ef(_$_V))`中的`829`
+    ![图片2](./static/keynameNum2.png)
+
+#### 3.3.2. offsetConst
+
+动态代码中生成8位解密用的偏移值数组使用，主要是里面的键值是任务数组中的值了，由于瑞数的任务树是打包时动态生成，且值为任务树中最顶层任务生成，不好获取，因此写死，键值可以在gv.r2mka('0-0').task中找到，也可以通过动态代码执行报错获取键值。
+
+#### 3.3.3. codemap
+
+瑞数主体循环方法生成的配置文件，用于动态代码使用。
+
+#### 3.3.3. immucfg
+
+该项为版本固定值，当网站未更新时值是不会变的，当需要配置时可以通过`makecode -u url`方式动态生成，如执行：`node main.js makecode -u https://wcjs.sbj.cnipa.gov.cn/sgtmi`后生成的`output/makecode_input_immucfg.json`文件。
+
+## 4. 技术交流
 
 加作者微信进技术交流群: `howduudu_tech`(备注rs-reverse)
 

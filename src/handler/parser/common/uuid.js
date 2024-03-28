@@ -8,9 +8,9 @@ function str2code(str) {
 
 module.exports = function (numarr) {
   if (typeof numarr === 'string') numarr = str2code(numarr);
-  let val = 0 ^ gv.cp2[41];
+  let val = 0 ^ -1;
   for (let i = 0; i < numarr.length; ) {
-    val = val >>> gv.cp2[52] ^ gv.bignum[(val ^ numarr[i++]) & gv.cp2[34]];
+    val = val >>> 8 ^ gv.bignum[(val ^ numarr[i++]) & 255];
   }
-  return (val ^ gv.cp2[41]) >>> 0;
+  return (val ^ -1) >>> 0;
 }

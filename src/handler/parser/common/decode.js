@@ -1,3 +1,4 @@
+const ascii2string = require('./ascii2string');
 const gv = require('@src/handler/globalVarible');
 
 function trans(numarr) {
@@ -6,31 +7,31 @@ function trans(numarr) {
   for (var idx = 0; idx < numarr.length; idx++) {
     const num = numarr[idx];
     let val;
-    if (num < gv.cp2[37]) {
+    if (num < 128) {
       val = num;
-    } else if (num < gv.cp2[46]) {
+    } else if (num < 192) {
       val = mark;
-    } else if (num < gv.cp2[36]) {
-      val = (num & gv.cp2[13]) << gv.cp2[55] | numarr[idx + 1] & gv.cp2[13];
+    } else if (num < 224) {
+      val = (num & 63) << 6 | numarr[idx + 1] & 63;
       idx++;
-    } else if (num < gv.cp2[7]) {
-      val = (num & gv.cp2[31]) << gv.cp2[14] | (numarr[idx + 1] & gv.cp2[13]) << gv.cp2[55] | numarr[idx + gv.cp2[56]] & gv.cp2[13];
-      idx += gv.cp2[56];
-    } else if (num < gv.cp2[99]) {
-      val = (num & gv.cp2[23]) << gv.cp2[9] | (numarr[idx + 1] & gv.cp2[13]) << gv.cp2[14] | (numarr[idx + gv.cp2[56]] & gv.cp2[13]) << gv.cp2[55] | numarr[idx + gv.cp2[58]] & gv.cp2[13];
-      idx += gv.cp2[58];
-    } else if (num < gv.cp2[148]) {
+    } else if (num < 240) {
+      val = (num & 15) << 12 | (numarr[idx + 1] & 63) << 6 | numarr[idx + 2] & 63;
+      idx += 2;
+    } else if (num < 248) {
+      val = (num & 7) << 18 | (numarr[idx + 1] & 63) << 12 | (numarr[idx + 2] & 63) << 6 | numarr[idx + 3] & 63;
+      idx += 3;
+    } else if (num < 252) {
       val = mark;
-      idx += gv.cp2[19];
-    } else if (num < gv.cp2[171]) {
+      idx += 4;
+    } else if (num < 254) {
       val = mark;
-      idx += gv.cp2[29];
+      idx += 5;
     } else {
       val = mark;
     }
-    if (val > gv.cp2[25]) {
-      val -= gv.cp2[26];
-      ans.push((val >> gv.cp2[0]) + gv.cp2[187], val % gv.cp2[63] + gv.cp2[160]);
+    if (val > 65535) {
+      val -= 65536;
+      ans.push((val >> 10) + 55296, val % 1024 + 56320);
     } else {
       ans.push(val);
     }
@@ -38,18 +39,6 @@ function trans(numarr) {
   return ans;
 }
 
-function join(numarr, start = 0, end = numarr.length) {
-  const ans = new Array(Math.ceil(numarr.length / gv.cp2[120]));
-  let idx = 0;
-  while (start < end - gv.cp2[120]) {
-    ans[idx++] = String.fromCharCode(...numarr.slice(start, start += gv.cp2[120]));
-  }
-  if (start < end) {
-    ans[idx++] = String.fromCharCode(...numarr.slice(start, end));
-  }
-  return ans.join('');
-}
-
 module.exports = function(numarr) {
-  return join(trans(numarr));
+  return ascii2string(trans(numarr));
 }

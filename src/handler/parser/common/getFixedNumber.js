@@ -2,7 +2,7 @@
 const gv = require('@src/handler/globalVarible');
 
 function nummod(num) {
-  return Math.abs(num) % gv.cp2[52];
+  return Math.abs(num) % 8;
 }
 
 function one(arr) {
@@ -81,11 +81,11 @@ function six(arr) {
 }
 
 module.exports = () => {
-  const arr = [0, 1, gv.cp2[56], gv.cp2[58], gv.cp2[19], gv.cp2[29], gv.cp2[55], gv.cp2[23]];
+  const arr = [0, 1, 2, 3, 4, 5, 6, 7];
   [one, two, three, four, five, six].forEach(func => func(arr));
   const sum = arr.reduce((ans, it, idx) => {
     ans[idx % 2] += it;
     return ans;
   }, [0, 0]);
-  return sum[0] & gv.cp2[34] | (sum[1] & gv.cp2[34]) << gv.cp2[52];
+  return sum[0] & 255 | (sum[1] & 255) << 8;
 }
