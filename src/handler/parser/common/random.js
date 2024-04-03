@@ -10,11 +10,11 @@ exports.execNumberByTime = function (times = 3) {
   return i;
 }
 
-exports.execRandomByNumber = function (nums = 98) {
+exports.execRandomByNumber = function (nums = 98, random) {
   // 指定次数的随机数取平均值后四舍五入
   if (typeof nums !== 'number') return;
   const arr = []
-  for (let i = 0; i < nums; i++) arr.push(Math.random());
+  for (let i = 0; i < nums; i++) arr.push(random || Math.random());
   const avg = _sum(arr) / nums;
   return [
     avg * 100,

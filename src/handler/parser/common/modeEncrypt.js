@@ -56,14 +56,14 @@ function getCfg(numarr) {
   return [ret, arr];
 }
 
-function encryptMode1(valarr, keyarr, flag = 1) {
+function encryptMode1(valarr, keyarr, flag = 1, random) {
   const cfg = getCfg(keyarr);
   var _$iv, _$j7, _$kb, _$ka, _$dV, _$du, _$jb;
   const max = Math.floor(valarr.length / 16) + 1;
   let ans = [], arr;
   const fill = 16 - valarr.length % 16;
   if (flag) {
-    ans = arr = new Array(4).fill(4294967295).map(it => Math.floor(Math.random() * it));
+    ans = arr = new Array(4).fill(4294967295).map(it => Math.floor((random || Math.random()) * it));
   }
   const copyarr = numToNumarr4.reverse_sign([...valarr, ...new Array(fill).fill(fill)]);
   for (let i = 0; i < max; ) {

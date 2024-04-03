@@ -120,7 +120,7 @@ module.exports = yargs
         coerce: (input) => {
           if (['1', '2'].includes(input)) {
             gv._setAttr('version', Number(input));
-            return paths.exampleResolve('codes', `${input}-\$_ts-full.json`);
+            return paths.exampleResolve('codes', `${input}-\$_ts.json`);
           }
           return input;
         }
@@ -131,6 +131,7 @@ module.exports = yargs
       Math.random = () => 0.1253744220839037;
       const gv = require('@utils/initGv')(argv.file);
       Object.assign(global, gv.utils);
+      Object.assign(global, require('@src/handler/viewer/'));
       const output = JSON.stringify(eval(argv.code));
       console.log([`\n  输入：${argv.code}`, `输出：${output}\n`].join('\n  '));
     }
