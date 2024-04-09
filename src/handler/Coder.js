@@ -18,6 +18,9 @@ module.exports = class {
     this.opdata = dataOper();
     this.r2mkaText = null;
     this.immucfg = immucfg || gv.config.immucfg;
+    this.functionsPushStart = { 1: 938, 2: 0, 3: 0, 4: 0 }; // 生成方法排序数据的开始下标, 938为键值为348所命中的代码中获得
+    this.functionsNameSort = []; // 存放vm代码中定义的方法，用于计算代码特征码使用
+    this.mainFunctionIdx = null; // 主函数（编号为1）在代码中的开始与结束下标
   }
 
   run() {
@@ -88,6 +91,7 @@ module.exports = class {
       this.gren(i, codeArr);
     }
     codeArr.push('}}}}}}}}}}'.substr(opmate.getMateOri('G_$gG') - 1));
+    this.mainFunctionIdx.push(codeArr.join('').length);
     return codeArr;
   }
 
@@ -133,15 +137,21 @@ module.exports = class {
     opmate.setMate('_$$c');
     opdata.setData('_$$k', func2(opmate.getMateOri('_$$c')));
     if (current) {
+      if (this.mainFunctionIdx === null) this.mainFunctionIdx = [codeArr.join('').length];
       codeArr.push("function ", opmate.getMate('_$jw'), "(", opmate.getMate('_$$6'));
       opdata.getData('_$_K').forEach(it => codeArr.push(",", keynames[it]));
       codeArr.push("){");
     } else {
       codeArr.push("(function(", opmate.getMate('G_$dK'), ",", opmate.getMate('G_$kv'), "){var ", opmate.getMate('_$$6'), "=0;");
     }
-    opdata.getData('_$$w').forEach(([key1, key2]) => {
-      codeArr.push("function ", keynames[key1], "(){var ", opmate.getMate('_$$q'), "=[", key2, "];Array.prototype.push.apply(", opmate.getMate('_$$q'), ",arguments);return ", opmate.getMate('_$$g'), ".apply(this,", opmate.getMate('_$$q'), ");}");
-    });
+    const functionsNameMap = opdata.getData('_$$w').reduce((ans, [key1, key2], idx) => {
+      const arr = ["function ", keynames[key1], "(){var ", opmate.getMate('_$$q'), "=[", key2, "];Array.prototype.push.apply(", opmate.getMate('_$$q'), ",arguments);return ", opmate.getMate('_$$g'), ".apply(this,", opmate.getMate('_$$q'), ");}"]
+      codeArr.push(...arr);
+      return {
+        ...ans,
+        [keynames[key1]]: arr.join(''),
+      }
+    }, {});
     opdata.getData('_$cS').forEach(item => {
       for (let i = 0; i < item.length - 1; i += 2) {
         codeArr.push(keycodes[item[i]], keynames[item[i + 1]])
@@ -157,9 +167,27 @@ module.exports = class {
     codeArr.push(opmate.getMate('_$$6'), ",", opmate.getMate('_$aw'), "=", opmate.getMate('G_$kv'), "[", current, "];");
     codeArr.push("while(1){", opmate.getMate('_$cu'), "=", opmate.getMate('_$aw'), "[", opmate.getMate('_$ku'), "++];");
     codeArr.push("if(", opmate.getMate('_$cu'), "<", opmate.getMateOri('_$bf'), "){");
+    if ([1, 2, 3, 4].includes(current)) {
+      this.functionsSort(current, functionsNameMap);
+    }
     const codelist = this.grenIfelse(0, opmate.getMateOri('_$bf'), []);
     codeArr.push(...codelist);
     codeArr.push("}else ", ';', '}');
+  }
+
+  functionsSort(current, functionsNameMap) {
+    const start = this.functionsPushStart[current];
+    const { opdata, opmate } = this
+    this.$_ts.aebi[current].slice(start, start + opdata.getData('_$$w').length).forEach(idx => {
+      const numarr = opdata.getData('_$$k')[idx];
+      if (!numarr || numarr.length !== 5) throw new Error('');
+      const name = this.keynames[numarr[3]];
+      this.functionsNameSort.push({
+        name,
+        current,
+        code: functionsNameMap[name],
+      });
+    })
   }
 
   grenIfelse(start, end, codeArr) {

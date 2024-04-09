@@ -43,7 +43,9 @@ const developConfig = {
 }
 
 module.exports = class {
-  constructor(ts, r2mkaText) {
+  constructor(ts, r2mkaText, coder, vmcode) {
+    this.coder = coder;
+    this.vmcode = vmcode;
     parser.init(ts, r2mkaText)
     const current = new Date().getTime() + 1000;
     this.config = {
@@ -151,7 +153,7 @@ module.exports = class {
         ...numToNumarr4(16777216), // gv.cp2取得
         ...numToNumarr4(0), // 任务编号0-0的任务列表取得
         ...numToNumarr2(getFixedNumber()), // 固定值5900
-        ...numToNumarr2(this.config.formatUid), // 根据方法的toString()计算, 使用了$_ts.aebi[1]作为任务的方法，
+        ...this.getCodeUid(),
       ],
       0, // 任务编号0>one>63-287的任务列表取得
       [0], // 任务编号0>one>63>one>4-290的任务列表取得
@@ -276,5 +278,14 @@ module.exports = class {
 
   getTaskNumber(name, idx) {
     return gv.r2mka(name).taskarr[idx];
+  }
+
+  getCodeUid() {
+    const mainFunctionCode = this.vmcode.slice(...this.coder.mainFunctionIdx);
+    const one = uuid(this.coder.functionsNameSort[ascii2string(gv.keys[33])].code);
+    const len = parseInt(mainFunctionCode.length / 100);
+    const start = len * ascii2string(gv.keys[34]);
+    const two = uuid(mainFunctionCode.substr(start, len))
+    return numToNumarr2((one ^ two) & 65535);
   }
 }

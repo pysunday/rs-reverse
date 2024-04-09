@@ -21,10 +21,10 @@ module.exports = function({ jscode, url }, name) {
       gv._setAttr('version', val);
       return ans;
     }
-    const idx = jscode.indexOf(val);
+    const idx = jscode.code.indexOf(val);
     if (idx === -1) throw new Error(`${key}值数据未找到，请查看文档：src/adapt/readme.md`);
-    if (jscode.indexOf(val, idx + val.length) > -1) throw new Error(`${key}对应的值${val}在代码中非唯一，请检查！`);
-    const fullString = findFullString(jscode, val);
+    if (jscode.code.indexOf(val, idx + val.length) > -1) throw new Error(`${key}对应的值${val}在代码中非唯一，请检查！`);
+    const fullString = findFullString(jscode.code, val);
     return { ...ans, [key]: fullString };
   }, {});
 }

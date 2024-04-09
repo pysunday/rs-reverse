@@ -115,7 +115,63 @@ Examples:
 
 ```
 
-### 2.3. exec子命令
+### 2.3. makecode-high子命令
+
+执行子命令`makecode-high`生成cookie，解码两次请求返回的网站代码(功能涵盖makecode子命令)，调用示例：
+
+1. npx方式：`npx rs-reverse makecode-high -u url`
+2. 文件方式：`node main.js makecode-high -u url`
+
+该命令第一次请求生成cookie带入第二次请求，将两次请求返回的加密代码及动态代码解码后保存到`output/makecode-high`目录中，和makecode命令区别为该命令只提供-u方式执行!
+
+```console
+ $ npx rs-reverse makecode-high -h
+rs-reverse makecode-high
+
+解码两次请求返回的网站代码(功能涵盖makecode子命令)
+
+Options:
+  -h             显示帮助信息                                          [boolean]
+  -f
+  -l, --level    日志打印等级，参考log4js，默认为info                   [string]
+  -u, --url      瑞数返回204状态码的请求地址                 [string] [required]
+  -a, --adapt    已经做了适配的网站名称，不传则为cnipa                  [string]
+  -v, --version  显示版本号                                            [boolean]
+
+Examples:
+  rs-reverse makecode-high -u http://url/path
+```
+
+调用示例：
+
+```bash
+ $ npx rs-reverse makecode-high -u https://wcjs.sbj.cnipa.gov.cn/sgtmi
+
+第1次请求：
+
+  url方式提取的ts：/path/to/output/makecode-high/first/ts.json
+  url方式提取的静态文本：/path/to/output/makecode-high/first/immucfg.json
+  程序生成的ts：/path/to/output/makecode-high/first/ts-full.json
+  url方式提取的javascript代码：/path/to/output/makecode-high/first/cCdzB9ZjDFks.a728b22.js
+  url方式提取的html代码：/path/to/output/makecode-high/first/sgtmi.html
+  cCdzB9ZjDFks.a728b22.js生成的动态代码：/path/to/output/makecode-high/first/cCdzB9ZjDFks.a728b22-dynamic.js
+
+第2次请求：
+
+  url方式提取的ts：/path/to/output/makecode-high/second/ts.json
+  url方式提取的静态文本：/path/to/output/makecode-high/second/immucfg.json
+  程序生成的ts：/path/to/output/makecode-high/second/ts-full.json
+  url方式提取的javascript代码：/path/to/output/makecode-high/second/cCdzB9ZjDFks.a728b22.js
+  url方式提取的html代码：/path/to/output/makecode-high/second/sgtmi.html
+  cCdzB9ZjDFks.a728b22.js生成的动态代码：/path/to/output/makecode-high/second/cCdzB9ZjDFks.a728b22-dynamic.js
+  url方式提取的javascript代码：/path/to/output/makecode-high/second/chunk-vendors.66e24864.js
+  url方式提取的javascript代码：/path/to/output/makecode-high/second/app.9f7a91c9.js
+  chunk-vendors.66e24864.js生成的解密代码：/path/to/output/makecode-high/second/chunk-vendors.66e24864-decrypt.js
+  app.9f7a91c9.js生成的解密代码：/path/to/output/makecode-high/second/app.9f7a91c9-decrypt.js
+
+```
+
+### 2.4. exec子命令
 
 exec子命令用于开发中或者演示时使用。命令示例：
 
@@ -154,10 +210,10 @@ Examples:
 
 适配文件配置在目录`./src/adapt/`下，已完成兼容配置：
 
-网站 | 名称 | makecode | makecookie | 适配版本 | 是否逆向验证
----- | ---- | -------- | ---------- | -------- | --------------
-商标网 | cnipa | 👌 | 👌 | - | Y
-瑞数官网 | riversecurity | 👌 | 👌 | 版本1 | N
+网站 | 名称 | makecode | makecookie | makecode-high | 适配版本 | 是否逆向验证
+---- | ---- | -------- | ---------- | ------------- | -------- | --------------
+商标网 | cnipa | 👌 | 👌 | 👌 | - | Y
+瑞数官网 | riversecurity | 👌 | 👌 | N | 版本1 | N
 
 以瑞数官网实例如：`npx rs-reverse makecookie -u https://www.riversecurity.com/resources.shtml -a riversecurity`
 
