@@ -7,6 +7,7 @@ const fs = require('fs');
 const makeCode = require('@src/makeCode');
 const makeCodeHigh = require('@src/makeCodeHigh');
 const makeCookie = require('@src/makeCookie');
+const basearrParse = require('@src/basearrParse');
 const utils = require('@utils/');
 const { logger, getCode } = utils;
 const pkg = require(paths.package);
@@ -64,6 +65,7 @@ const commandHandler = (command, argv) => {
   const ts = argv.url?.$_ts || argv.file || require(paths.exampleResolve('codes', `${gv.version}-\$_ts.json`));
   logger.trace(`传入的$_ts.nsd: ${ts.nsd}`);
   logger.trace(`传入的$_ts.cd: ${ts.cd}`);
+  gv._setAttr('argv', argv);
   try {
     if (argv.url) {
       command(ts, adapt(argv.url, argv.adapt), argv.url);
@@ -88,8 +90,15 @@ module.exports = yargs
   })
   .command({
     command: 'makecode-high',
-    describe: '生成动态代码-高级',
-    builder: commandBuilder,
+    describe: '解码两次请求返回的网站代码(功能涵盖makecode子命令)',
+    builder: {
+      ...commandBuilder,
+      f: undefined,
+      u: {
+        ...commandBuilder.u,
+        demandOption: true,
+      }
+    },
     handler: commandHandler.bind(null, makeCodeHigh),
   })
   .command({
@@ -120,7 +129,7 @@ module.exports = yargs
         coerce: (input) => {
           if (['1', '2'].includes(input)) {
             gv._setAttr('version', Number(input));
-            return paths.exampleResolve('codes', `${input}-\$_ts-full.json`);
+            return paths.exampleResolve('codes', `${input}-\$_ts.json`);
           }
           return input;
         }
@@ -131,8 +140,30 @@ module.exports = yargs
       Math.random = () => 0.1253744220839037;
       const gv = require('@utils/initGv')(argv.file);
       Object.assign(global, gv.utils);
+      Object.assign(global, require('@src/handler/viewer/'));
       const output = JSON.stringify(eval(argv.code));
       console.log([`\n  输入：${argv.code}`, `输出：${output}\n`].join('\n  '));
+    }
+  })
+  .command({
+    command: 'basearr',
+    describe: '接收压缩前数字数组的序列化文本并格式化解析',
+    builder: {
+      l: {
+        alias: 'level',
+        describe: '日志打印等级，参考log4js，默认为info',
+        type: 'string',
+      },
+      b: {
+        alias: 'basearr',
+        describe: '压缩前数字数组的序列化文本',
+        type: 'array',
+        demandOption: true,
+      }
+    },
+    handler: (argv) => {
+      debugLog(argv.level);
+      basearrParse(argv.basearr);
     }
   })
   .updateStrings({

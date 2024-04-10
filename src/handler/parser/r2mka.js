@@ -27,8 +27,9 @@ function gtHandler(str, curr) {
 const parse = (() => {
   let count = 0;
   const valMap = {};
-  return function(val, deep = 0, deeps = [0]) {
+  return function(val, deep = 0, deeps = [0], parent = null) {
     const str = val.taskstr;
+    val.parent = parent;
     val.taskstr = str;
     val.val = {};
     if (!str) {
@@ -41,12 +42,12 @@ const parse = (() => {
     valMap[val.key] = val;
     val.child_one.map((it, idx) => {
       if (it) {
-        parse(it, deep + 1, [...deeps, 'one', idx]);
+        parse(it, deep + 1, [...deeps, 'one', idx], val);
       }
     });
     val.child_two.map((it, idx) => {
       if (it) {
-        parse(it, deep + 1, [...deeps, 'two', idx]);
+        parse(it, deep + 1, [...deeps, 'two', idx], val);
       }
     });
     return (key) => {

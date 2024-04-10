@@ -66,6 +66,10 @@ class GlobalVarible {
     // 返回密钥集合
     return cache.keys;
   }
+  get argv() {
+    // 命令调用参数
+    return cache.argv;
+  }
   _getAttr(attr) {
     return cache[attr];
   }

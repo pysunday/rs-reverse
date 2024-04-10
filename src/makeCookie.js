@@ -39,7 +39,7 @@ module.exports = function (ts, immucfg) {
   const coder = new Coder(ts, immucfg);
   const { code, $_ts } = coder.run();
   const r2mkaText = parseR2mka(coder.r2mkaText);
-  const cookie = new Cookie($_ts, r2mkaText).run();
+  const cookie = new Cookie($_ts, r2mkaText, coder, code).run();
   if (gv.metaContent) {
     logger.info(`存在meta-content值：${gv.metaContent.content} 解析结果：${gv.metaContent.value}`);
   }
