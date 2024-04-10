@@ -93,7 +93,9 @@ function secondStep(ts, immucfg, mate) {
 }
 
 module.exports = async function (ts, immucfg, mate) {
-  fse.moveSync(paths.outputResolve('makecode-high'), paths.outputResolve('makecode-high-old'), { overwrite: true });
+  if (fs.existsSync(paths.outputResolve('makecode-high'))) {
+    fse.moveSync(paths.outputResolve('makecode-high'), paths.outputResolve('makecode-high-old'), { overwrite: true });
+  }
   const startTime = new Date().getTime();
   const [files, cookieStr] = firstStep(ts, immucfg, mate);
   files.unshift('\n第1次请求：\n');
