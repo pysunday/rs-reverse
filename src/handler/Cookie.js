@@ -2,7 +2,6 @@ const _random = require('lodash/random');
 const dataOper = require('./dataOper');
 const parser = require('./parser/');
 const gv = require('./globalVarible');
-const randomUseragent = require('random-useragent');
 
 const {
   factorial,
@@ -31,15 +30,6 @@ const {
 
 const developConfig = {
   // 开发时用的配置，比如时间值固定、随机数固定等
-  // 'window.innerWidth': 150,
-  // 'window.outerWidth': 1336,
-  // currentTime: 1711730658454,
-  // r2mkaTime: 1711712705,
-  // startTime: 1711730659,
-  // runTime: 1711730659,
-  // formatUid: 58854,
-  // random: 0.123,
-  execNumberByTime: 1778,
 }
 
 module.exports = class {
@@ -77,7 +67,8 @@ module.exports = class {
       startTime: Math.floor(current / 1000) - 1, // 模拟浏览器启动时间
       r2mkaTime: +ascii2string(gv.keys[21]), // r2mka文本解析出来的时间
       random: null, // 代替Math.random方法返回值
-      execNumberByTime: execNumberByTime(), // 固定时间内的循环运行次数
+      // execNumberByTime: execNumberByTime(), // 固定时间内的循环运行次数
+      execNumberByTime: _random(1500, 2000), // 固定时间内的循环运行次数
       ...developConfig,
     }
     // console.log(this.config);

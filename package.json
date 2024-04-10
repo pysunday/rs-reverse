@@ -44,7 +44,6 @@
     "lodash": "^4.17.21",
     "log4js": "^6.9.1",
     "module-alias": "^2.2.3",
-    "random-useragent": "^0.5.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "yargs": "^17.7.2"

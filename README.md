@@ -10,12 +10,6 @@
 
 该项目的研究网站仅做参考，项目不鼓励直接请求该研究网站，算法逆向研究请直接使用`example`目录下的样例文件，如：`node main.js makecookie`(默认为最新版本代码)。
 
-该瑞数cookie生成过程中的算法逆向存在以下变量：
-
-1. 预先设置好的配置项，参见：`代码中config的值`;
-2. 代码中的数字`46228`为作者代码格式化且代码修改后计算出来的方法字符串摘要值;
-3. 代码中中的`_random(500, 1000)`为作者电脑运行计算的大概值，此值与浏览器运行环境有关(如电脑配置等);
-
 ## 1. 博客文章
 
 1. [瑞数vmp-代码格式化后无法正常运行原因分析](https://howduudu.tech/#/blog/article/1699807978000)
@@ -123,6 +117,10 @@ Examples:
 2. 文件方式：`node main.js makecode-high -u url`
 
 该命令第一次请求生成cookie带入第二次请求，将两次请求返回的加密代码及动态代码解码后保存到`output/makecode-high`目录中，和makecode命令区别为该命令只提供-u方式执行!
+
+需要注意的是，请避免连续执行该命令以免触发风控报错，报错如：
+
+![makecode-high风控报错](./static/error-makecode-high.png)
 
 ```console
  $ npx rs-reverse makecode-high -h
