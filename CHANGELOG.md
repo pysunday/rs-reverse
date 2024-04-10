@@ -1,5 +1,12 @@
 
 
+## [1.7.1](https://github.com/pysunday/rs-reverse/compare/1.7.0...1.7.1) (2024-04-10)
+
+
+### Bug Fixes
+
+* 拷贝目录报错修复 ([b8702c0](https://github.com/pysunday/rs-reverse/commit/b8702c0eeee0a32c11775af523c5e0ecb42fc5bc))
+
 ## [1.7.0](https://github.com/pysunday/rs-reverse/compare/1.6.0...1.7.0) (2024-04-10)
 
 
