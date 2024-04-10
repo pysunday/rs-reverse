@@ -1,5 +1,19 @@
 
 
+## [1.7.0](https://github.com/pysunday/rs-reverse/compare/1.6.0...1.7.0) (2024-04-10)
+
+
+### Features
+
+* 1. 增加makecode-high子命令 2. 增加basearr子命令 ([7757ad5](https://github.com/pysunday/rs-reverse/commit/7757ad59341e1278f1f3ea37f2c09fe6374c9193))
+
+
+### Bug Fixes
+
+* 1. exec命令适配版本；2. 新版cookie位数逻辑更新（无法过检测） ([ae822c7](https://github.com/pysunday/rs-reverse/commit/ae822c7a4dc908fe483d622ff4b391719b447703))
+* 文档更新、代码优化 ([36848f8](https://github.com/pysunday/rs-reverse/commit/36848f8527ab954723dccb886b2931047c3c35a6))
+* 更新readme ([4caaf73](https://github.com/pysunday/rs-reverse/commit/4caaf73979105168ecfedcf0279fde2d279290cf))
+
 ## [1.6.0](https://github.com/pysunday/rs-reverse/compare/1.5.1...1.6.0) (2024-03-28)
 
 
