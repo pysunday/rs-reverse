@@ -35,34 +35,41 @@ npm包不能保证最新代码，最新代码以仓库代码为准!
 
 ```console
  $ npx rs-reverse makecode -h
- rs-reverse makecode
+rs-reverse makecode
 
-生成动态代码
+接收ts.json文件生成immucfg、ts、ts-full文件，如果传入的是url则还会生成html、主代
+码、动态代码文件，还可通过-j命令接收多个$_ts.l__处理的文件url并生成该js文件及解
+密后的js文件。
+
+**`-j`参数需要注意，链接地址必须带上查询参数，不带的话返回的是未经过瑞数处理的文件，可以从浏览器控制台查看带参数的完整地址，如果待解密的js文件存在多个时，为了保证结果中变量名与瑞数解析的变量名一致，需要按浏览器的解析顺序依序传入（因为变量名存在复用逻辑）。**
 
 Options:
   -h             显示帮助信息                                          [boolean]
   -f, --file     含有nsd, cd值的json文件                                [string]
   -l, --level    日志打印等级，参考log4js，默认为info                   [string]
   -u, --url      瑞数返回204状态码的请求地址                            [string]
-  -v, --version  显示版本号                                            [boolean]
-
-Examples:
-  rs-reverse makecode -f example/codes/1-$_ts.json
-  rs-reverse makecode -u http://url/path
+  -a, --adapt    已经做了适配的网站名称，不传则为cnipa                  [string]
+  -j, --jsurls   $_ts.__l方法执行的js文件链接(必须带上查询参数)，多个时需要按顺
+                 序传入，如：-j "https://host/chunk.js?4VGu1xaT=a728b2" -j
+                 "https://host/app.js?4VGu1xaT=a728b2"                   [array]
+  -v, --version  显示版本号
 ```
 
 调用示例：
 
 ```bash
- $ npx rs-reverse makecode -u https://wcjs.sbj.cnipa.gov.cn/sgtmi
+ $ npx rs-reverse makecode -u https://wcjs.sbj.cnipa.gov.cn/sgtmi -j 'https://wcjs.sbj.cnipa.gov.cn/js/chunk-vendors.66e24864.js?查询参数' -j 'https://wcjs.sbj.cnipa.gov.cn/js/app.9f7a91c9.js?查询参数'
 
-  url方式提取的ts：/path/to/output/makecode_input_ts.json
-  url方式提取的静态文本：/path/to/output/makecode_input_immucfg.json
-  url方式提取的javascript代码：/path/to/output/makecode_input_js.js
-  url方式提取的html代码：/path/to/output/makecode_input_html.html
-
-  程序生成的ts：/path/to/output/makecode_output_ts.json
-  程序生成的动态代码：/path/to/output/makecode_output_code.js
+  url方式提取的ts：output/makecode/ts.json
+  url方式提取的静态文本：output/makecode/immucfg.json
+  程序生成的ts：output/makecode/ts-full.json
+  url方式提取的html代码：output/makecode/sgtmi.html
+  url方式提取的javascript代码：output/makecode/cCdzB9ZjDFks.a728b22.js
+  cCdzB9ZjDFks.a728b22.js生成的动态代码：output/makecode/cCdzB9ZjDFks.a728b22-dynamic.js
+  url方式提取的javascript代码：output/makecode/chunk-vendors.66e24864.js
+  chunk-vendors.66e24864.js生成的解密代码：output/makecode/chunk-vendors.66e24864-decrypt.js
+  url方式提取的javascript代码：output/makecode/app.9f7a91c9.js
+  app.9f7a91c9.js生成的解密代码：output/makecode/app.9f7a91c9-decrypt.js
 
 ```
 
@@ -79,7 +86,7 @@ Examples:
  $ npx rs-reverse makecookie -h
 rs-reverse makecookie
 
-生成动态代码
+生成cookie值并打印
 
 Options:
   -h             显示帮助信息                                          [boolean]
@@ -88,19 +95,12 @@ Options:
   -u, --url      瑞数返回204状态码的请求地址                            [string]
   -a, --adapt    已经做了适配的网站名称，不传则为cnipa                  [string]
   -v, --version  显示版本号                                            [boolean]
-
-Examples:
-  rs-reverse makecookie -f example/codes/1-$_ts.json
-  rs-reverse makecookie -u http://url/path
 ```
 
 调用示例：
 
 ```bash
  $ npx rs-reverse makecookie -u https://wcjs.sbj.cnipa.gov.cn/sgtmi
-
-  url方式提取的ts：/path/to/output/makecookie_url_ts_1704391389883.json
-  url方式提取的静态文本：/path/to/output/makecookie_url_immutext_1704391389883.json
 
   存在meta-content值：n5fQ9G1lGvUzfS_yMHx30yYAbp2_NDZI 解析结果：/sgtmi
 
@@ -111,7 +111,7 @@ Examples:
 
 ### 2.3. makecode-high子命令
 
-执行子命令`makecode-high`生成cookie，解码两次请求返回的网站代码(功能涵盖makecode子命令)，调用示例：
+执行子命令`makecode-high`生成网站代码，解码两次请求返回的网站代码(功能涵盖makecode子命令)，调用示例：
 
 1. npx方式：`npx rs-reverse makecode-high -u url`
 2. 文件方式：`node main.js makecode-high -u url`
@@ -130,7 +130,6 @@ rs-reverse makecode-high
 
 Options:
   -h             显示帮助信息                                          [boolean]
-  -f
   -l, --level    日志打印等级，参考log4js，默认为info                   [string]
   -u, --url      瑞数返回204状态码的请求地址                 [string] [required]
   -a, --adapt    已经做了适配的网站名称，不传则为cnipa                  [string]
@@ -147,25 +146,25 @@ Examples:
 
 第1次请求：
 
-  url方式提取的ts：/path/to/output/makecode-high/first/ts.json
-  url方式提取的静态文本：/path/to/output/makecode-high/first/immucfg.json
-  程序生成的ts：/path/to/output/makecode-high/first/ts-full.json
-  url方式提取的javascript代码：/path/to/output/makecode-high/first/cCdzB9ZjDFks.a728b22.js
-  url方式提取的html代码：/path/to/output/makecode-high/first/sgtmi.html
-  cCdzB9ZjDFks.a728b22.js生成的动态代码：/path/to/output/makecode-high/first/cCdzB9ZjDFks.a728b22-dynamic.js
+  url方式提取的ts：output/makecode-high/first/ts.json
+  url方式提取的静态文本：output/makecode-high/first/immucfg.json
+  程序生成的ts：output/makecode-high/first/ts-full.json
+  url方式提取的javascript代码：output/makecode-high/first/cCdzB9ZjDFks.a728b22.js
+  url方式提取的html代码：output/makecode-high/first/sgtmi.html
+  cCdzB9ZjDFks.a728b22.js生成的动态代码：output/makecode-high/first/cCdzB9ZjDFks.a728b22-dynamic.js
 
 第2次请求：
 
-  url方式提取的ts：/path/to/output/makecode-high/second/ts.json
-  url方式提取的静态文本：/path/to/output/makecode-high/second/immucfg.json
-  程序生成的ts：/path/to/output/makecode-high/second/ts-full.json
-  url方式提取的javascript代码：/path/to/output/makecode-high/second/cCdzB9ZjDFks.a728b22.js
-  url方式提取的html代码：/path/to/output/makecode-high/second/sgtmi.html
-  cCdzB9ZjDFks.a728b22.js生成的动态代码：/path/to/output/makecode-high/second/cCdzB9ZjDFks.a728b22-dynamic.js
-  url方式提取的javascript代码：/path/to/output/makecode-high/second/chunk-vendors.66e24864.js
-  url方式提取的javascript代码：/path/to/output/makecode-high/second/app.9f7a91c9.js
-  chunk-vendors.66e24864.js生成的解密代码：/path/to/output/makecode-high/second/chunk-vendors.66e24864-decrypt.js
-  app.9f7a91c9.js生成的解密代码：/path/to/output/makecode-high/second/app.9f7a91c9-decrypt.js
+  url方式提取的ts：output/makecode-high/second/ts.json
+  url方式提取的静态文本：output/makecode-high/second/immucfg.json
+  程序生成的ts：output/makecode-high/second/ts-full.json
+  url方式提取的javascript代码：output/makecode-high/second/cCdzB9ZjDFks.a728b22.js
+  url方式提取的html代码：output/makecode-high/second/sgtmi.html
+  cCdzB9ZjDFks.a728b22.js生成的动态代码：output/makecode-high/second/cCdzB9ZjDFks.a728b22-dynamic.js
+  url方式提取的javascript代码：output/makecode-high/second/chunk-vendors.66e24864.js
+  url方式提取的javascript代码：output/makecode-high/second/app.9f7a91c9.js
+  chunk-vendors.66e24864.js生成的解密代码：output/makecode-high/second/chunk-vendors.66e24864-decrypt.js
+  app.9f7a91c9.js生成的解密代码：output/makecode-high/second/app.9f7a91c9-decrypt.js
 
 ```
 

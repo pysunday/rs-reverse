@@ -18,13 +18,6 @@ function parseR2mka(text) {
   return unescape(text.substr(start, end));
 }
 
-function mkdirsSync(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    mkdirsSync(path.dirname(dirPath));
-    fs.mkdirSync(dirPath);
-  }
-}
-
 function filenameAddDesc(name, desc) {
   const arr = name.split('.');
   if (arr.length < 2) throw new Error(`文件名不正确: ${name}`);
@@ -63,14 +56,8 @@ function writeFile(step, ts, immucfg, { jscode, html, appcode = [] }, $_ts, code
       text: it.decryptCode,
     }))
   ].filter(Boolean).map(it => ({ ...it, filepath: paths.outputResolve('makecode-high', step, it.name) }))
-  if (!fs.existsSync(paths.outputResolve('makecode-high', step))) mkdirsSync(paths.outputResolve('makecode-high', step));
+  if (!fs.existsSync(paths.outputResolve('makecode-high', step))) fse.ensureDirSync(paths.outputResolve('makecode-high', step));
   return files;
-}
-
-function decryptAppCode(appcode, idx) {
-  const $_ts = { l__: (...params) => params };
-  const codeParams = eval(appcode.code);
-  appcode.decryptCode = new AppCode(codeParams, idx + 1).run();
 }
 
 function firstStep(ts, immucfg, mate) {
@@ -88,7 +75,9 @@ function secondStep(ts, immucfg, mate) {
   gv._setAttr('_ts', ts);
   const coder = new Coder(ts, immucfg);
   const { code, $_ts } = coder.run();
-  mate.appcode.map(decryptAppCode);
+  mate.appcode.forEach((appcode, idx) => {
+    appcode.decryptCode = new AppCode(AppCode.getParams(appcode.code)).run();
+  });
   return writeFile('second', ts, immucfg, mate, $_ts, code);
 }
 
@@ -104,7 +93,7 @@ module.exports = async function (ts, immucfg, mate) {
   files.forEach(({ filepath, text, code }) => filepath && fs.writeFileSync(filepath, text || code));
   logger.info([
     `代码还原成功！用时：${new Date().getTime() - startTime}ms\n`,
-    ...files.reduce((ans, it, idx) => ([...ans, typeof it === 'string' ? it : `${it.desc}${it.filepath}${idx === files.length - 1 || it.newLine ? '\n' : ''}`]), []),
+    ...files.reduce((ans, it, idx) => ([...ans, typeof it === 'string' ? it : `${it.desc}${paths.relative(it.filepath)}${idx === files.length - 1 || it.newLine ? '\n' : ''}`]), []),
   ].join('\n  '));
 }
 

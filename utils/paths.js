@@ -23,4 +23,5 @@ module.exports = {
   outputResolve: (...p) => path.resolve('output', ...p),
   examplePath: resolveApp('example'),
   exampleResolve: (...p) => resolveApp('example', ...p),
+  relative: (p) => path.relative(path.resolve(), p),
 };

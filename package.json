@@ -1,6 +1,6 @@
 {
   "name": "rs-reverse",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "瑞数算法逆向,website reverse engineering",
   "main": "main.js",
   "directories": {
@@ -36,7 +36,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "author": "pysunday",
-  "license": "ISC",
+  "license": "BSD 3-Clause",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "fs-extra": "^11.2.0",

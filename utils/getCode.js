@@ -26,7 +26,7 @@ function nameHandle(name, extend) {
   return name.split('.').pop() === extend ? name : `${name}.${extend}`;
 }
 
-module.exports = async function getCode(url, cookieStr) {
+async function getCodeByHtml(url, cookieStr) {
   if (cookieStr) {
     cookieJar.setCookie(request.cookie(cookieStr), url);
   }
@@ -53,8 +53,14 @@ module.exports = async function getCode(url, cookieStr) {
     appcode: [],
     url,
   }
-  for(let src of remotes) {
-    const jsurl = urlresolve(url, src);
+  await getCodeByJs(remotes.map(it => urlresolve(url, it)), ret);
+  if (ret.jscode) return ret;
+  throw new Error('js外链中没有瑞数的代码文件');
+}
+
+async function getCodeByJs(urls, ret = { appcode: [] }) {
+  for(let url of urls) if (!isValidUrl(url)) throw new Error(`输入链接不正确：${url}`);
+  for(let jsurl of urls) {
     const name = jsurl.split('?')[0].split('/').pop();
     const jscode = await request(addRequestHead(jsurl));
     const data = {
@@ -69,6 +75,14 @@ module.exports = async function getCode(url, cookieStr) {
       ret.jscode = data;
     }
   }
-  if (ret.jscode) return ret;
-  throw new Error('js外链中没有瑞数的代码文件');
+  return ret;
+}
+
+module.exports = function getCode(url, ...params) {
+  if (typeof url === 'string') {
+    return getCodeByHtml(url, ...params);
+  }
+  if (Array.isArray(url)) {
+    return getCodeByJs(url);
+  }
 }

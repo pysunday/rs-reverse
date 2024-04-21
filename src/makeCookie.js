@@ -34,7 +34,7 @@ function writefile(ts, immucfg) {
 
 module.exports = function (ts, immucfg) {
   gv._setAttr('_ts', ts);
-  if (immucfg) writefile(ts, immucfg);
+  // if (immucfg) writefile(ts, immucfg);
   const startTime = new Date().getTime();
   const coder = new Coder(ts, immucfg);
   const { code, $_ts } = coder.run();
