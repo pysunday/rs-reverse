@@ -63,7 +63,7 @@ module.exports = function (ts, immucfg, mate = {}) {
   const { code, $_ts } = coder.run();
   init($_ts);
   mate.appcode?.forEach((appcode, idx) => {
-    appcode.decryptCode = new AppCode(AppCode.getParams(appcode.code)).run();
+    appcode.decryptCode = new AppCode(AppCode.getParams(appcode.code), idx + 1).run();
   });
   const files = writeFile(ts, immucfg, mate, $_ts, code);
   logger.info([

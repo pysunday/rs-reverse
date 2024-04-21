@@ -1,6 +1,6 @@
 {
   "name": "rs-reverse",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "瑞数算法逆向,website reverse engineering",
   "main": "main.js",
   "directories": {

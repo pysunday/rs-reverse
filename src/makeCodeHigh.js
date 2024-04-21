@@ -76,7 +76,7 @@ function secondStep(ts, immucfg, mate) {
   const coder = new Coder(ts, immucfg);
   const { code, $_ts } = coder.run();
   mate.appcode.forEach((appcode, idx) => {
-    appcode.decryptCode = new AppCode(AppCode.getParams(appcode.code)).run();
+    appcode.decryptCode = new AppCode(AppCode.getParams(appcode.code), idx + 1).run();
   });
   return writeFile('second', ts, immucfg, mate, $_ts, code);
 }
