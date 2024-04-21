@@ -1,5 +1,7 @@
 const gv = require('@src/handler/globalVarible');
 
+let maxLen = 0; // 用于与瑞数代码逻辑一致，瑞数逻辑是当数组长度少于上一次生成的数组则复用上一次的数组
+
 module.exports = class {
   constructor(params, idx) {
     this.oper = 0;
@@ -38,15 +40,18 @@ module.exports = class {
   getKeys(len) {
     const keys = [];
     for(let i = 0; i <= len; i++) {
-      const j = Math.floor((this.random || Math.random()) * 4294967295) % len + 0;
+      const j = Math.floor((Math.random()) * 4294967295) % len + 0;
+      const temp = keys[i];
       keys[i] = keys[j] || `$_${j}`;
-      keys[j] = `$_${i}`;
+      keys[j] = temp || `$_${i}`;
     }
     return keys;
   }
 
-  decrypt() {
-    const keys = this.getKeys(this.getLength());
+  decrypt(isMerge = false) {
+    // isMerge：是否将变量数组合并到代码中
+    maxLen = Math.max(this.getLength(), maxLen);
+    const keys = this.getKeys(maxLen);
     const name = `$$_${this.idx}`;
     const num = this.getLength();
     const ret = new Array(num), res = [];
@@ -71,16 +76,14 @@ module.exports = class {
           ret[i] = val;
           break;
         case 4:
-          // ret[i] = `${name}[${next}]`;
-          ret[i] = `"${staticText[next]}"`;
+          ret[i] = isMerge ? `"${staticText[next]}"` : `${name}[${next}]`;
           break;
         case 5:
           ret[i] = this.params[2][next]
           break;
       }
     }
-    // return `window[${name}]=${JSON.stringify(staticText)};${ret.join('')}`;
-    return ret.join('');
+    return isMerge ? ret.join('') : `window.${name}=${JSON.stringify(staticText)};\n${ret.join('')}`;
   }
 
   run() {
@@ -90,5 +93,14 @@ module.exports = class {
       throw new Error('预期值不符，需要增加额外代码适配！');
     };
     return code;
+  }
+
+  static getParams(code) {
+    // 去除外层的$_ts.l__方法
+    if (typeof code !== 'string' || code.indexOf('$_ts.l__') !== 0) {
+      throw new Error('解码网站渲染代码未发现$_ts.l__前缀，请检查!');
+    }
+    const $_ts = { l__: (...params) => params };
+    return eval(code);
   }
 }
