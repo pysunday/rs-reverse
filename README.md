@@ -12,9 +12,10 @@
 
 ## 1. 博客文章
 
-1. [瑞数vmp-代码格式化后无法正常运行原因分析](https://howduudu.tech/#/blog/article/1699807978000)
-2. [瑞数vmp-动态代码生成原理](https://howduudu.tech/#/blog/article/1701276778000)
-3. [补环境-document.all的c++方案](https://howduudu.tech/#/blog/article/1702313578000)
+1. [瑞数vmp-代码格式化后无法正常运行原因分析](https://howduudu.tech/blog/article/420dc80bfb66280ddbb93d87864cadd1/)
+2. [瑞数vmp-动态代码生成原理](https://howduudu.tech/blog/article/95f60638eaa0647bcf327fb4f2c2887c/)
+3. [补环境-document.all的c++方案1](https://howduudu.tech/blog/article/00bb5f4a997c39858e25fa962e8cd5b8/)
+4. [补环境-document.all的c++方案2](https://howduudu.tech/blog/article/de942bdea377f7f3ce6878fc04a8c76c/)
 
 ## 2. 瑞数算法还原
 
